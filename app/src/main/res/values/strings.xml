@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ID_QR</string>
+    <string name="login_btn_txt">LOGIN</string>
+    <string name="recover_password_btn_txt">RECUPERAR CONTRASEÑA</string>
+    <string name="input_correo_txt">Correo</string>
+    <string name="input_usuario_txt">Usuario</string>
+    <string name="input_contrasena_txt">Contraseña</string>
+    <string name="input_username_txt">Username</string>
+    <string name="input_password_txt">Password</string>
+    <string name="temporal">Temporal</string>
+    <string name="forgot_password">Olvidé mi Contraseña</string>
+    <string name="title_activity_main_screen_qr">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main_screen__q_r">MainActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="qr">QR</string>
+    <string name="pago">Pago</string>
+    <string name="recarga">Recarga</string>
+    <string name="historial">Historial</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragmento_qr">Fragmento QR</string>
+    <string name="fragmento_pago">Fragmento Pago</string>
+    <string name="fragmento_recarga">Fragmento Recarga</string>
+    <string name="fragmento_historial">Fragmento Historial</string>
+</resources>

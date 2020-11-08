@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginMain">
+    <activity
+        android:id="@+id/loginMain"
+        android:name="com.example.id_qr.login.LoginMain"
+        android:label="login_activity"
+        tools:layout="@layout/login_activity" >
+        <action
+            android:id="@+id/action_loginMain_to_recoverPassword"
+            app:destination="@id/recoverPassword" />
+        <action
+            android:id="@+id/action_loginMain_to_menu_navigation"
+            app:destination="@id/menu_navigation" />
+    </activity>
+    <activity
+        android:id="@+id/recoverPassword"
+        android:name="com.example.id_qr.login.RecoverPassword"
+        android:label="activity_recover_password"
+        tools:layout="@layout/activity_recover_password" />
+    <include app:graph="@navigation/menu_navigation" />
+</navigation>

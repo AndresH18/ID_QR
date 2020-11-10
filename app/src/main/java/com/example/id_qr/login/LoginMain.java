@@ -2,6 +2,7 @@ package com.example.id_qr.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,6 +17,8 @@ import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
 
 public class LoginMain extends AppCompatActivity {
+    private Toast backToast;
+    private long backPressedTime = 0;
 
     private ImageView logoU;
     private TextView textViewTemporal;
@@ -82,14 +85,13 @@ public class LoginMain extends AppCompatActivity {
                         // if(verificarUsuario(user, pass)){
 
                         if (true) {
-                            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                             // make intent for main activity
                             Intent intent = new Intent(LoginMain.this, Principal.class);
                             // start main Activity
-                            //FIXME im crashing the app
                             startActivity(intent);
                             //finish login
-                            // finish();
+                            finish();
                         }
                     } else {
                         //Correo no Termina en "@eia.edu.co"
@@ -138,5 +140,28 @@ public class LoginMain extends AppCompatActivity {
             }
 
         });
+    }
+
+    /**
+     * Called when the activity has detected the user's press of the back
+     * key. The {@link #getOnBackPressedDispatcher() OnBackPressedDispatcher} will be given a
+     * chance to handle the back button before the default behavior of
+     * {@link Activity#onBackPressed()} is invoked.
+     *
+     * @see #getOnBackPressedDispatcher()
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            System.exit(0);
+            return;
+        } else{
+            backToast = Toast.makeText(LoginMain.this,"Press back again to exit",Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

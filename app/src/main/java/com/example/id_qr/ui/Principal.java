@@ -39,8 +39,8 @@ public class Principal extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         navView = findViewById(R.id.bottomNavigationView);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
 
         mHandler = new Handler();

@@ -2,23 +2,19 @@ package com.example.id_qr.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.id_qr.R;
-import com.example.id_qr.login.LoginMain;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Principal extends AppCompatActivity {
@@ -28,11 +24,12 @@ public class Principal extends AppCompatActivity {
     private Toast backToast;
     private Handler mHandler;
 
+
     private final Fragment fragment1 = new QRFragment();
     private final Fragment fragment2 = new PagoFragment();
     private final Fragment fragment3 = new RecargaFragment();
     private final Fragment fragment4 = new HistorialFragment();
-    private FragmentManager fm = getSupportFragmentManager();
+    private final FragmentManager fm = getSupportFragmentManager();
     private Fragment active = fragment1;
 
 
@@ -42,14 +39,15 @@ public class Principal extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         navView = findViewById(R.id.bottomNavigationView);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
         mHandler = new Handler();
 
 
-        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
         /*usar esto en vez de Navcontroller y NavigationUI*/
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment2, "2").hide(fragment2).commit();
@@ -117,7 +115,7 @@ public class Principal extends AppCompatActivity {
         }
     };
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override

@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.id_qr.R;
 
 public class RecoverPassword extends AppCompatActivity {
     private final String recoverUrl = "https://eiadigital.eia.edu.co/sao/recuperarContrasena.do";
+    private final Toast toast = Toast.makeText(RecoverPassword.this, "Correo No Autorizado", Toast.LENGTH_LONG);
+
     private Button btn;
     private EditText correoEditText;
     private Intent webRecoverIntent;
@@ -27,11 +30,14 @@ public class RecoverPassword extends AppCompatActivity {
 
         webRecoverIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoverUrl));
 
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(correoEditText.getText().toString().endsWith("@eia.edu.co")) {
+                if (correoEditText.getText().toString().endsWith("@eia.edu.co")) {
                     startActivity(webRecoverIntent);
+                } else {
+                    toast.show();
                 }
             }
         });

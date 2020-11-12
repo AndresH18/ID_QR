@@ -77,7 +77,10 @@ public class QRFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_q_r, container, false);
+
         qrImageView = (ImageView) view.findViewById(R.id.qr_imageView);
+
+        refrescarQR();
 
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_q_r, container, false);

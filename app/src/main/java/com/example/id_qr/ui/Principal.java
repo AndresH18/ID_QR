@@ -12,12 +12,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Principal extends AppCompatActivity {
+    private static final String TAG = "Principal";
+
+    private Button btn_PagoNormal;
 
     private BottomNavigationView navView;
     private long backPressedTime;
@@ -37,21 +43,20 @@ public class Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
         navView = findViewById(R.id.bottomNavigationView);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-
         mHandler = new Handler();
-
+        repeater();
 
         /*usar esto en vez de Navcontroller y NavigationUI*/
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment2, "2").hide(fragment2).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment1, "1").commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment1, "1").hide(fragment1).commit();
+        fm.beginTransaction().show(active);
         /*
          * Usar esto si en el manifesto hay soporte para la actionBar
          */
@@ -100,7 +105,7 @@ public class Principal extends AppCompatActivity {
     }
 
     public void repeater() {
-        Log.i("TAG", "repeater");
+        Log.i(TAG, "REPEATER");
         mHandler.postDelayed(runable, 10);
 
     }
@@ -108,7 +113,7 @@ public class Principal extends AppCompatActivity {
     public Runnable runable = new Runnable() {
         @Override
         public void run() {
-            Log.i("TAG", "Runable");
+            Log.i(TAG, "RUNNABLE: REFERESCAR QR");
             QRFragment.refrescarQR();
             int segundos = 10;
             mHandler.postDelayed(this, 1000 * segundos);
@@ -143,4 +148,5 @@ public class Principal extends AppCompatActivity {
             return false;
         }
     };
+
 }

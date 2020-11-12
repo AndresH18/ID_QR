@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.id_qr.R;
 
@@ -16,6 +19,7 @@ import com.example.id_qr.R;
  * create an instance of this fragment.
  */
 public class PagoFragment extends Fragment {
+    private static final String TAG = "PagoFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +29,15 @@ public class PagoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Button btn_PagoNormal;
+    private Button btn_PagoDia;
+    private Button btn_PagoTransporte;
+
+    private ImageButton ib_pagoNormal;
+    private ImageButton ib_pagoDia;
+    private ImageButton ib_pagoTransporte;
+
 
     public PagoFragment() {
         // Required empty public constructor
@@ -60,7 +73,84 @@ public class PagoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_pago, container, false);
+
+        Log.i(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
+        btn_PagoNormal = (Button) view.findViewById(R.id.btn_pago_dia_normal);
+        if (btn_PagoNormal == null) {
+            Log.e(TAG, "FAILED TO ASSIGN R.id.btn_pago_dia_normal");
+        }
+
+        btn_PagoDia = (Button) view.findViewById(R.id.btn_pago_dia_completo);
+        btn_PagoTransporte = (Button) view.findViewById(R.id.btn_pago_transporte_eia);
+
+        ib_pagoNormal = (ImageButton) view.findViewById(R.id.ib_pago_dia_normal);
+        ib_pagoDia = (ImageButton) view.findViewById(R.id.ib_pago_dia_completo);
+        ib_pagoTransporte = (ImageButton) view.findViewById(R.id.ib_pago_transporte);
+
+        startActions();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pago, container, false);
+//        return inflater.inflate(R.layout.fragment_pago, container, false);
+        return view;
     }
+
+    private void pagoNormal() {
+        System.out.println("Pago Dia Normal");
+    }
+
+    private void pagoDia() {
+        System.out.println("Pago Dia Completo");
+    }
+
+    private void pagoTransporte() {
+        System.out.println("Pago Transporte");
+    }
+
+
+    private void startActions() {
+
+        btn_PagoNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoNormal();
+            }
+        });
+
+        ib_pagoNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoNormal();
+            }
+        });
+
+        btn_PagoDia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoDia();
+            }
+        });
+
+        ib_pagoDia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoDia();
+            }
+        });
+
+        btn_PagoTransporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoTransporte();
+            }
+        });
+
+        ib_pagoTransporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagoTransporte();
+            }
+        });
+    }
+
 }

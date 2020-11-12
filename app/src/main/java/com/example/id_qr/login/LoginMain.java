@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
 
 public class LoginMain extends AppCompatActivity {
+    private static final String TAG = "LoginMain";
     private Toast backToast;
     private long backPressedTime = 0;
 
@@ -83,12 +85,13 @@ public class LoginMain extends AppCompatActivity {
                          */
                         //TODO
                         // if(verificarUsuario(user, pass)){
-
                         if (true) {
                             // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                             // make intent for main activity
+                            Log.i(TAG, "Declare intent for \"Principal\"");
                             Intent intent = new Intent(LoginMain.this, Principal.class);
                             // start main Activity
+                            Log.i(TAG, "Start Intent for\"Principal\"");
                             startActivity(intent);
                             //finish login
                             finish();

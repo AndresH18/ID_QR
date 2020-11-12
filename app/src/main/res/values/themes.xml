@@ -18,5 +18,8 @@
     <style name="Theme.ID_QR.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/buttons</item>
+        <!--Color para la barra de tareas, arriba-->
+<!--        <item name="colorPrimaryVariant">@color/buttons</item>-->
     </style>
 </resources>

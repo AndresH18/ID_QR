@@ -24,4 +24,7 @@
     <string name="fragmento_pago">Fragmento Pago</string>
     <string name="fragmento_recarga">Fragmento Recarga</string>
     <string name="fragmento_historial">Fragmento Historial</string>
+    <string name="pago_dia_normal">Pago Normal</string>
+    <string name="pago_dia_completo">Pago Dia Completo</string>
+    <string name="pago_transporte_eia">Pago Transporte EIA</string>
 </resources>

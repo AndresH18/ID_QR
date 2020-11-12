@@ -1,9 +1,11 @@
 package com.example.id_qr.ui;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -82,6 +84,7 @@ public class QRFragment extends Fragment {
 
         refrescarQR();
 
+
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_q_r, container, false);
         return view;
@@ -115,4 +118,6 @@ public class QRFragment extends Fragment {
         }
 
     }
+
+
 }

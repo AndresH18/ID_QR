@@ -2,19 +2,15 @@ package com.example.id_qr.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.id_qr.R;
@@ -31,12 +27,13 @@ public class Principal extends AppCompatActivity {
     private Handler mHandler;
 
 
-    private final Fragment fragment1 = new QRFragment();
-    private final Fragment fragment2 = new PagoFragment();
-    private final Fragment fragment3 = new RecargaFragment();
-    private final Fragment fragment4 = new HistorialFragment();
+    private final Fragment fragmentQR = new QRFragment();
+    private final Fragment fragmentPago = new PagoFragment();
+    private final Fragment fragmentRecarga = new RecargaFragment();
+    private final Fragment fragmentHistorial = new HistorialFragment();
     private final FragmentManager fm = getSupportFragmentManager();
-    private Fragment active = fragment1;
+    private Fragment active = fragmentQR;
+
 
 
     @Override
@@ -44,6 +41,8 @@ public class Principal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         navView = findViewById(R.id.bottomNavigationView);
+
+
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -52,10 +51,10 @@ public class Principal extends AppCompatActivity {
 
         /*usar esto en vez de Navcontroller y NavigationUI*/
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment3, "3").hide(fragment3).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment2, "2").hide(fragment2).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment1, "1").hide(fragment1).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).commit();
         fm.beginTransaction().show(active);
         /*
          * Usar esto si en el manifesto hay soporte para la actionBar
@@ -115,7 +114,7 @@ public class Principal extends AppCompatActivity {
         public void run() {
             Log.i(TAG, "RUNNABLE: REFERESCAR QR");
             QRFragment.refrescarQR();
-            int segundos = 10;
+            final int segundos = 10;
             mHandler.postDelayed(this, 1000 * segundos);
         }
     };
@@ -127,26 +126,27 @@ public class Principal extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.fragmentQR:
-                    fm.beginTransaction().hide(active).show(fragment1).commit();
-                    active = fragment1;
+                    fm.beginTransaction().hide(active).show(fragmentQR).commit();
+                    active = fragmentQR;
                     return true;
 
                 case R.id.fragmentPago:
-                    fm.beginTransaction().hide(active).show(fragment2).commit();
-                    active = fragment2;
+                    fm.beginTransaction().hide(active).show(fragmentPago).commit();
+                    active = fragmentPago;
                     return true;
 
                 case R.id.fragmentRecarga:
-                    fm.beginTransaction().hide(active).show(fragment3).commit();
-                    active = fragment3;
+                    fm.beginTransaction().hide(active).show(fragmentRecarga).commit();
+                    active = fragmentRecarga;
                     return true;
                 case R.id.fragmentHistorial:
-                    fm.beginTransaction().hide(active).show(fragment4).commit();
-                    active = fragment4;
+                    fm.beginTransaction().hide(active).show(fragmentHistorial).commit();
+                    active = fragmentHistorial;
                     return true;
             }
             return false;
         }
     };
+
 
 }

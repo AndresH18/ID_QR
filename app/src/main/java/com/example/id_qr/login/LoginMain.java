@@ -19,6 +19,9 @@ import com.example.id_qr.ui.Principal;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
+
+
+
     private Toast backToast;
     private long backPressedTime = 0;
 

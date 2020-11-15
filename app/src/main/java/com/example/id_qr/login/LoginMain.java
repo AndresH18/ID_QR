@@ -3,11 +3,13 @@ package com.example.id_qr.login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,10 +40,7 @@ public class LoginMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
-        if (savedInstanceState == null) {
-            setContentView(R.layout.login_activity);
-        }
+        setContentView(R.layout.login_activity_2);
 
         textViewTemporal = (TextView) findViewById(R.id.temporal_layout_login);
         editTextUser = (EditText) findViewById(R.id.login_username_editText);
@@ -57,6 +56,7 @@ public class LoginMain extends AppCompatActivity {
     }
 
     public void recoverPassword(View view) {
+        hideKeyBoard(view);
         // Intent intent = new Intent(this, RecoverPassword.class);
         Intent intent = new Intent(LoginMain.this, RecoverPassword.class);
         startActivity(intent);
@@ -89,6 +89,9 @@ public class LoginMain extends AppCompatActivity {
                         //TODO
                         // if(verificarUsuario(user, pass)){
                         if (true) {
+
+                            hideKeyBoard(v);
+
                             // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                             // make intent for main activity
                             Log.i(TAG, "Declare intent for \"Principal\"");
@@ -169,5 +172,15 @@ public class LoginMain extends AppCompatActivity {
             backToast.show();
         }
         backPressedTime = System.currentTimeMillis();
+    }
+
+    private void hideKeyBoard(View view) {
+        // Hide the keyboard when the button is pushed.
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

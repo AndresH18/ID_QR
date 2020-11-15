@@ -24,7 +24,7 @@ public class Principal extends AppCompatActivity {
     private BottomNavigationView navView;
     private long backPressedTime;
     private Toast backToast;
-    private Handler mHandler;
+    private Handler mHandler = new Handler();
 
 
     private final Fragment fragmentQR = new QRFragment();
@@ -42,12 +42,13 @@ public class Principal extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         navView = findViewById(R.id.bottomNavigationView);
 
-
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        mHandler = new Handler();
-        repeater();
+        //repeater();
+        Log.e(TAG, "mRunnableQR start");
+        mRunnableQR.run();
+        Log.e(TAG, "mRunnableQR passed");
 
         /*usar esto en vez de Navcontroller y NavigationUI*/
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -71,7 +72,9 @@ public class Principal extends AppCompatActivity {
 
         ////NavigationUI.setupWithNavController(navView, navController);
 
-        repeater();
+//        repeater();
+
+
 
     }
 
@@ -103,18 +106,21 @@ public class Principal extends AppCompatActivity {
         }
     }
 
-    public void repeater() {
+   /* private void repeater() {
         Log.i(TAG, "REPEATER");
-        mHandler.postDelayed(runable, 10);
+        mHandler.postDelayed(mRunnableQR, 10);
+    }*/
 
-    }
-
-    public Runnable runable = new Runnable() {
+    private Runnable mRunnableQR = new Runnable() {
         @Override
         public void run() {
             Log.i(TAG, "RUNNABLE: REFERESCAR QR");
-            QRFragment.refrescarQR();
-            final int segundos = 10;
+//            QRFragment.refrescarQR();
+
+            //TODO refrescar qr
+
+            final int segundos = 5;
+
             mHandler.postDelayed(this, 1000 * segundos);
         }
     };
@@ -147,6 +153,8 @@ public class Principal extends AppCompatActivity {
             return false;
         }
     };
+
+
 
 
 }

@@ -1,26 +1,15 @@
 package com.example.id_qr.ui;
 
-import android.Manifest;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.id_qr.R;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,15 +71,16 @@ public class QRFragment extends Fragment {
 
         qrImageView = (ImageView) view.findViewById(R.id.qr_imageView);
 
-        refrescarQR();
+        //refrescarQR();
 
+        //TODO: Refrescar QR
 
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_q_r, container, false);
         return view;
     }
 
-    private static String generateCode() {
+    /*private static String generateCode() {
         StringBuilder sb = new StringBuilder();
         Random r = new Random();
         for (int i = 0; i < 30; i++) {
@@ -98,7 +88,7 @@ public class QRFragment extends Fragment {
         }
         return sb.toString();
     }
-    Color a = new Color();
+
     public static void refrescarQR() {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         String s = generateCode();
@@ -117,7 +107,10 @@ public class QRFragment extends Fragment {
 
         }
 
-    }
+    }*/
 
+    public static ImageView getQrImageView() {
+        return qrImageView;
+    }
 
 }

@@ -12,10 +12,10 @@
         android:layout_width="177dp"
         android:layout_height="135dp"
         android:layout_marginStart="28dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
-        app:layout_constraintBottom_toTopOf="@+id/ib_pago_dia_normal"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_eia" />
 
     <ImageView
@@ -27,71 +27,67 @@
         app:layout_constraintBottom_toBottomOf="@+id/logo_U_layout_login"
         app:layout_constraintStart_toEndOf="@+id/logo_U_layout_login"
         app:layout_constraintTop_toTopOf="@+id/logo_U_layout_login"
-        app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/logo_idqr" />
 
     <Button
         android:id="@+id/btn_pago_dia_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
         android:text="@string/pago_dia_normal"
-        app:layout_constraintBottom_toTopOf="@+id/ib_pago_dia_completo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_pago_dia_normal" />
 
     <Button
         android:id="@+id/btn_pago_dia_completo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="11dp"
         android:text="@string/pago_dia_completo"
-        app:layout_constraintBottom_toTopOf="@+id/ib_pago_transporte"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_pago_dia_completo" />
 
     <Button
         android:id="@+id/btn_pago_transporte_eia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:text="@string/pago_transporte_eia"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_pago_transporte" />
 
     <ImageButton
         android:id="@+id/ib_pago_dia_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/icono_pago_normal"
-        app:layout_constraintBottom_toTopOf="@+id/btn_pago_dia_normal"
-        app:layout_constraintEnd_toEndOf="@+id/btn_pago_dia_normal"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/btn_pago_dia_normal" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_U_layout_login" />
 
     <ImageButton
         android:id="@+id/ib_pago_dia_completo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/icono_pago_dia"
-        app:layout_constraintBottom_toTopOf="@+id/btn_pago_dia_completo"
-        app:layout_constraintEnd_toEndOf="@+id/btn_pago_dia_completo"
-        app:layout_constraintStart_toStartOf="@+id/btn_pago_dia_completo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pago_dia_normal" />
 
     <ImageButton
         android:id="@+id/ib_pago_transporte"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/icono_pago_transporte"
-        app:layout_constraintBottom_toTopOf="@+id/btn_pago_transporte_eia"
-        app:layout_constraintEnd_toEndOf="@+id/btn_pago_transporte_eia"
-        app:layout_constraintStart_toStartOf="@+id/btn_pago_transporte_eia" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pago_dia_completo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,22 +1,29 @@
 package com.example.id_qr.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.example.id_qr.R;
+import com.example.id_qr.back.SimpleAsyncTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Principal extends AppCompatActivity {
+public class Principal_2 extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Bitmap> {
+
     private static final String TAG = "Principal";
 
     private Button btn_PagoNormal;
@@ -27,13 +34,12 @@ public class Principal extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
 
-    private final Fragment fragmentQR = new QRFragment_2();
-    private final Fragment fragmentPago = new PagoFragment();
-    private final Fragment fragmentRecarga = new RecargaFragment();
-    private final Fragment fragmentHistorial = new HistorialFragment();
-    private final FragmentManager fm = getSupportFragmentManager();
+    private Fragment fragmentQR = new QRFragment();
+    private Fragment fragmentPago = new PagoFragment();
+    private Fragment fragmentRecarga = new RecargaFragment();
+    private Fragment fragmentHistorial = new HistorialFragment();
+    private FragmentManager fm = getSupportFragmentManager();
     private Fragment active = fragmentQR;
-
 
 
     @Override
@@ -74,6 +80,15 @@ public class Principal extends AppCompatActivity {
 
 //        repeater();
 
+//        if(getSupportLoaderManager().getLoader(0)!=null){
+//            getSupportLoaderManager().initLoader(0,null,this);
+//        }
+
+
+        if (LoaderManager.getInstance(this).getLoader(0) != null) {
+            LoaderManager.getInstance(this).initLoader(0, null, this);
+        }
+        refrescarQR();
 
 
     }
@@ -97,7 +112,7 @@ public class Principal extends AppCompatActivity {
                 System.exit(0);
                 return;
             } else {
-                backToast = Toast.makeText(Principal.this, "Press back again to exit", Toast.LENGTH_SHORT);
+                backToast = Toast.makeText(Principal_2.this, "Press back again to exit", Toast.LENGTH_SHORT);
                 backToast.show();
             }
             backPressedTime = System.currentTimeMillis();
@@ -118,6 +133,7 @@ public class Principal extends AppCompatActivity {
 //            QRFragment.refrescarQR();
 
             //TODO refrescar qr
+            refrescarQR();
 
             final int segundos = 5;
 
@@ -154,4 +170,39 @@ public class Principal extends AppCompatActivity {
         }
     };
 
+
+    private void refrescarQR() {
+//        LoaderManager.getInstance(this);
+//        getSupportLoaderManager().restartLoader(0, null, this);
+        LoaderManager.getInstance(this).restartLoader(0, null, this);
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Bitmap> onCreateLoader(int id, @Nullable Bundle args) {
+
+        if (id == 0) {
+//            return new SimpleAsyncTask(this, QRFragment.getQrImageView());
+            return new SimpleAsyncTask(this);
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Bitmap> loader, Bitmap data) {
+//        if (QRFragment_2.getQrImageView() != null) {
+//            QRFragment_2.getQrImageView().setImageBitmap(data);
+//        } else {
+//            Log.e(TAG, "ES NULLO");
+//        }
+        ((ImageView) findViewById(R.id.qr_imageView)).setImageBitmap(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Bitmap> loader) {
+
+    }
 }

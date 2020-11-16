@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
+import com.example.id_qr.ui.Principal_2;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
@@ -95,7 +96,8 @@ public class LoginMain extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                             // make intent for main activity
                             Log.i(TAG, "Declare intent for \"Principal\"");
-                            Intent intent = new Intent(LoginMain.this, Principal.class);
+                            //FIXME: Principal_2 => Principal
+                            Intent intent = new Intent(LoginMain.this, Principal_2.class);
                             // start main Activity
                             Log.i(TAG, "Start Intent for\"Principal\"");
                             startActivity(intent);

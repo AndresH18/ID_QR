@@ -1,10 +1,13 @@
 package com.example.id_qr.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,11 +21,18 @@ import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
 
+    private FirebaseAuth mAuth;
 
+    private boolean result = false;
 
     private Toast backToast;
     private long backPressedTime = 0;
@@ -36,6 +46,27 @@ public class LoginMain extends AppCompatActivity {
 
     private String user;
     private String pass;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            Toast.makeText(getApplicationContext(), "NO USER", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(), "THERE is a user", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseAuth.getInstance().signOut();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null) {
+            Toast.makeText(getApplicationContext(), "Sign out", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +83,11 @@ public class LoginMain extends AppCompatActivity {
 
         startActionListener();
 
-        editTextUser.setText("@eia.edu.co");
+        //FIXME: delete on completion
+        editTextUser.setText("andres@eia.edu.co");
+        editTextPass.setText("Andres");
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void recoverPassword(View view) {
@@ -88,8 +123,9 @@ public class LoginMain extends AppCompatActivity {
                          */
                         //TODO
                         // if(verificarUsuario(user, pass)){
-                        if (true) {
-
+//                        if (true) {
+                        if (signIn(user, pass, v.getContext())) {
+                            Log.e(TAG, "PASSED");
                             hideKeyBoard(v);
 
                             // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
@@ -168,8 +204,8 @@ public class LoginMain extends AppCompatActivity {
             super.onBackPressed();
             System.exit(0);
             return;
-        } else{
-            backToast = Toast.makeText(LoginMain.this,"Press back again to exit",Toast.LENGTH_SHORT);
+        } else {
+            backToast = Toast.makeText(LoginMain.this, "Press back again to exit", Toast.LENGTH_SHORT);
             backToast.show();
         }
         backPressedTime = System.currentTimeMillis();
@@ -184,4 +220,51 @@ public class LoginMain extends AppCompatActivity {
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
+
+    private boolean signIn(String user, String pass, Context context) {
+        Log.i(TAG, "signing in");
+//        final boolean[] result = {false};
+
+        if (user.isEmpty()) {
+            user = " ";
+        }
+        if (pass.isEmpty()) {
+            pass = " ";
+        }
+
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Create background thread to connect and get data
+            mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        Log.i(TAG, "signInWithEmail:success");
+//                        FirebaseUser user = mAuth.getCurrentUser();
+                        result = true;
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Log.i(TAG, "singInWithEmail:failure");
+                        Toast.makeText(context, "Failed to sign in", Toast.LENGTH_SHORT).show();
+                        result = false;
+                    }
+
+                }
+            });
+        } else {
+            Log.w(TAG, "NO INTERNET CONECTION");
+            Toast.makeText(context, "No se detecto Conexi" + (char) 243 + "n", Toast.LENGTH_LONG).show();
+            result = false;
+        }
+
+        return result;
+    }
+
 }

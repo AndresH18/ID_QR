@@ -20,6 +20,6 @@
         android:id="@+id/recoverPassword"
         android:name="com.example.id_qr.login.RecoverPassword"
         android:label="activity_recover_password"
-        tools:layout="@layout/activity_recover_password" />
+        tools:layout="@layout/recover_password_activity" />
     <include app:graph="@navigation/menu_navigation" />
 </navigation>

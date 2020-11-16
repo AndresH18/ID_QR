@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ID_QR.NoActionBar">
         <activity
-            android:name=".ui.Principal_2"
+            android:name=".ui.Principal"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.RecoverPassword"

@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
-import com.example.id_qr.ui.Principal_2;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
@@ -41,7 +40,7 @@ public class LoginMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity_2);
+        setContentView(R.layout.login_activity);
 
         textViewTemporal = (TextView) findViewById(R.id.temporal_layout_login);
         editTextUser = (EditText) findViewById(R.id.login_username_editText);
@@ -96,8 +95,8 @@ public class LoginMain extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                             // make intent for main activity
                             Log.i(TAG, "Declare intent for \"Principal\"");
-                            //FIXME: Principal_2 => Principal
-                            Intent intent = new Intent(LoginMain.this, Principal_2.class);
+
+                            Intent intent = new Intent(LoginMain.this, Principal.class);
                             // start main Activity
                             Log.i(TAG, "Start Intent for\"Principal\"");
                             startActivity(intent);

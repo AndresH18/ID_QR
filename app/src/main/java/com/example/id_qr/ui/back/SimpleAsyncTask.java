@@ -1,10 +1,9 @@
-package com.example.id_qr.back;
+package com.example.id_qr.ui.back;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

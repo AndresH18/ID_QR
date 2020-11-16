@@ -25,7 +25,7 @@ public class RecoverPassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recover_password_2);
+        setContentView(R.layout.recover_password_activity);
 
         btn = (Button) findViewById(R.id.recover_btn_layout_recoverP);
         correoEditText = (EditText) findViewById(R.id.email_editText_Layout_recoverP);

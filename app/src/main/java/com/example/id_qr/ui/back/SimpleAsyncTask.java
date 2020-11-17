@@ -43,7 +43,7 @@ public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
     }
 
     private String generateCode() {
-        Log.i(TAG, "Generate Code");
+        Log.d(TAG, "Generate Code");
 
         StringBuilder sb = new StringBuilder();
         Random r = new Random();
@@ -54,7 +54,7 @@ public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
     }
 
     public Bitmap generarQR() {
-        Log.i(TAG, "Refrescar QR()");
+        Log.d(TAG, "Refrescar QR()");
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         String s = generateCode();
@@ -67,10 +67,10 @@ public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
                     bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.parseColor("#E5F1FF"));
                 }
             }
-            Log.i(TAG, "generar QR: SUCCESFULL");
+            Log.d(TAG, "generar QR: SUCCESFULL");
             return bitmap;
         } catch (WriterException e) {
-            Log.i(TAG, "generar QR: FAILED");
+            Log.e(TAG, "generar QR: FAILED",e);
             Log.e(TAG, e.getLocalizedMessage());
         }
         return null;

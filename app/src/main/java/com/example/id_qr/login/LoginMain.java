@@ -15,9 +15,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
@@ -37,8 +37,6 @@ public class LoginMain extends AppCompatActivity {
     private Toast backToast;
     private long backPressedTime = 0;
 
-    private ImageView logoU;
-    private TextView textViewTemporal;
     private EditText editTextUser;
     private TextView editTextPass;
     private Button btn_login;
@@ -47,24 +45,29 @@ public class LoginMain extends AppCompatActivity {
     private String user;
     private String pass;
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser == null){
+//            Toast.makeText(getApplicationContext(), "NO USER", Toast.LENGTH_SHORT).show();
+//        }else{
+//            Toast.makeText(getApplicationContext(), "THERE is a user", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
-            Toast.makeText(getApplicationContext(), "NO USER", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getApplicationContext(), "THERE is a user", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
-            Toast.makeText(getApplicationContext(), "Sign out", Toast.LENGTH_SHORT).show();
+        if (currentUser != null) {
+            Log.d(TAG, "Current user === existes");
+            FirebaseAuth.getInstance().signOut();
+            Log.d(TAG, "Current user: logout");
+        } else {
+            Log.d(TAG, "Current user === null");
         }
     }
 
@@ -72,14 +75,10 @@ public class LoginMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
-        textViewTemporal = (TextView) findViewById(R.id.temporal_layout_login);
-        editTextUser = (EditText) findViewById(R.id.login_username_editText);
+        editTextUser = findViewById(R.id.login_username_editText);
         editTextPass = (EditText) findViewById(R.id.login_password_editText);
-        logoU = (ImageView) findViewById(R.id.logo_U_layout_login);
-
-        btn_login = (Button) findViewById(R.id.login_btn_layout_login);
-        btn_recuperarPassword = (Button) findViewById(R.id.recover_password_btn_layout_login);
+        btn_login = findViewById(R.id.login_btn_layout_login);
+        btn_recuperarPassword = findViewById(R.id.recover_password_btn_layout_login);
 
         startActionListener();
 
@@ -94,6 +93,8 @@ public class LoginMain extends AppCompatActivity {
         hideKeyBoard(view);
         // Intent intent = new Intent(this, RecoverPassword.class);
         Intent intent = new Intent(LoginMain.this, RecoverPassword.class);
+        String s = editTextUser.getText().toString();
+        intent.putExtra("email_user", s);
         startActivity(intent);
     }
 
@@ -121,24 +122,25 @@ public class LoginMain extends AppCompatActivity {
 
                          * textViewTemporal.setText(sb.toString());
                          */
+                        hideKeyBoard(v);
                         //TODO
                         // if(verificarUsuario(user, pass)){
+                        log_in(user, pass, v.getContext());
 //                        if (true) {
-                        if (signIn(user, pass, v.getContext())) {
-                            Log.e(TAG, "PASSED");
-                            hideKeyBoard(v);
-
-                            // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-                            // make intent for main activity
-                            Log.i(TAG, "Declare intent for \"Principal\"");
-
-                            Intent intent = new Intent(LoginMain.this, Principal.class);
-                            // start main Activity
-                            Log.i(TAG, "Start Intent for\"Principal\"");
-                            startActivity(intent);
-                            //finish login
-                            finish();
-                        }
+//                        if (signIn(user, pass, v.getContext())) {
+//                            hideKeyBoard(v);
+//
+//                            // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+//                            // make intent for main activity
+//                            Log.i(TAG, "Declare intent for \"Principal\"");
+//
+//                            Intent intent = new Intent(LoginMain.this, Principal.class);
+//                            // start main Activity
+//                            Log.i(TAG, "Start Intent for\"Principal\"");
+//                            startActivity(intent);
+//                            //finish login
+//                            finish();
+//                        }
                     } else {
                         //Correo no Termina en "@eia.edu.co"
                         Toast toast = Toast.makeText(v.getContext(), " Correo No Autorizado", Toast.LENGTH_SHORT);
@@ -221,9 +223,9 @@ public class LoginMain extends AppCompatActivity {
         }
     }
 
-    private boolean signIn(String user, String pass, Context context) {
-        Log.i(TAG, "signing in");
-//        final boolean[] result = {false};
+
+    private void log_in(String user, String pass, Context context) {
+        Log.i(TAG, "signing in...");
 
         if (user.isEmpty()) {
             user = " ";
@@ -247,13 +249,20 @@ public class LoginMain extends AppCompatActivity {
                         Log.d(TAG, "signInWithEmail:success");
                         Log.i(TAG, "signInWithEmail:success");
 //                        FirebaseUser user = mAuth.getCurrentUser();
-                        result = true;
+
+                        Log.i(TAG, "Declare intent for \"Principal\"");
+//
+                        Intent intent = new Intent(LoginMain.this, Principal.class);
+                        // start main Activity
+                        Log.i(TAG, "Start Intent for\"Principal\"");
+                        startActivity(intent);
+                        //finish login
+                        finish();
                     } else {
-                        // If sign in fails, display a message to the user.
+                        // If log_in in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Log.i(TAG, "singInWithEmail:failure");
-                        Toast.makeText(context, "Failed to sign in", Toast.LENGTH_SHORT).show();
-                        result = false;
+                        Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -261,10 +270,9 @@ public class LoginMain extends AppCompatActivity {
         } else {
             Log.w(TAG, "NO INTERNET CONECTION");
             Toast.makeText(context, "No se detecto Conexi" + (char) 243 + "n", Toast.LENGTH_LONG).show();
-            result = false;
+
         }
 
-        return result;
     }
 
 }

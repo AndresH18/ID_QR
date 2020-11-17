@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.id_qr.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +33,11 @@ public class PagoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+//    private FirebaseAuth mAuth;
+//    private FirebaseUser mUser;
+//    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     private Button btn_PagoNormal;
     private Button btn_PagoDia;
@@ -68,6 +77,7 @@ public class PagoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+//        DatabaseReference conditionReference = mRootRef.child("condition");
     }
 
     @Override
@@ -76,12 +86,12 @@ public class PagoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_pago, container, false);
 
-        Log.i(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
+        Log.d(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
         btn_PagoNormal = (Button) view.findViewById(R.id.btn_pago_dia_normal);
         if (btn_PagoNormal == null) {
             Log.e(TAG, "FAILED TO ASSIGN R.id.btn_pago_dia_normal");
-        }else{
-            Log.i(TAG, "R.id.btn_pago_dia_normal Assigned");
+        } else {
+            Log.d(TAG, "R.id.btn_pago_dia_normal Assigned");
         }
 
         btn_PagoDia = (Button) view.findViewById(R.id.btn_pago_dia_completo);
@@ -92,6 +102,13 @@ public class PagoFragment extends Fragment {
         ib_pagoTransporte = (ImageButton) view.findViewById(R.id.ib_pago_transporte);
 
         startActions();
+
+
+        //
+//        mUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (mUser != null) {
+//            Log.e(TAG, "User is signed in");
+//        }
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_pago, container, false);
         return view;
@@ -99,6 +116,11 @@ public class PagoFragment extends Fragment {
 
     private void pagoNormal() {
         System.out.println("Pago Dia Normal");
+
+//        if (mUser != null) {
+//            // Agregar a fecha
+//            // [fecha hoy] :
+//        }
     }
 
     private void pagoDia() {

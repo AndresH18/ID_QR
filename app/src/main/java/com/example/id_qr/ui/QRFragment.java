@@ -1,9 +1,11 @@
 package com.example.id_qr.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
@@ -16,7 +18,6 @@ import com.example.id_qr.R;
  * create an instance of this fragment.
  */
 public class QRFragment extends Fragment {
-
     private static final String TAG = "QR_Fragment";
 
     private static ImageView qrImageView;
@@ -69,6 +70,14 @@ public class QRFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_q_r, container, false);
 
         qrImageView = (ImageView) view.findViewById(R.id.qr_imageView);
+
+        //FIXME: DELETE
+        ((Button)view.findViewById(R.id.buttonAAAa)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "AAAAAAAAAAAAAAAA");
+            }
+        });
 
         //refrescarQR();
 

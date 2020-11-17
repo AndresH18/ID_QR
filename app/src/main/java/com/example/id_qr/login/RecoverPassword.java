@@ -21,6 +21,7 @@ public class RecoverPassword extends AppCompatActivity {
     private Button btn;
     private EditText correoEditText;
     private Intent webRecoverIntent;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,10 @@ public class RecoverPassword extends AppCompatActivity {
         btn = (Button) findViewById(R.id.recover_btn_layout_recoverP);
         correoEditText = (EditText) findViewById(R.id.email_editText_Layout_recoverP);
 
-
+        Intent recoverIntent = getIntent();
+        if((email = recoverIntent.getStringExtra("email_user")) != null){
+            correoEditText.setText(email);
+        }
         webRecoverIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoverUrl));
 
 

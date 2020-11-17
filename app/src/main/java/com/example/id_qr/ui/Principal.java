@@ -21,10 +21,15 @@ import androidx.loader.content.Loader;
 import com.example.id_qr.R;
 import com.example.id_qr.ui.back.SimpleAsyncTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Principal extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Bitmap> {
 
     private static final String TAG = "Principal";
+
+//    private FirebaseAuth mAuth;
+//    private FirebaseUser user;
 
     private Button btn_PagoNormal;
 
@@ -41,9 +46,20 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     private FragmentManager fm = getSupportFragmentManager();
     private Fragment active = fragmentQR;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        FirebaseAuth.getInstance().signOut();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+////        if(currentUser == null) {
+//        Log.i(TAG, "Sign out");
+//        Toast.makeText(getApplicationContext(), "Sign out", Toast.LENGTH_SHORT).show();
+////        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         navView = findViewById(R.id.bottomNavigationView);
@@ -52,17 +68,21 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 //        setSupportActionBar(toolbar);
 
         //repeater();
-        Log.e(TAG, "mRunnableQR start");
+        Log.d(TAG, "mRunnableQR start");
         mRunnableQR.run();
-        Log.e(TAG, "mRunnableQR passed");
+        Log.d(TAG, "mRunnableQR passed");
 
         /*usar esto en vez de Navcontroller y NavigationUI*/
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).commit();
-        fm.beginTransaction().show(active);
+//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial).commit();
+//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga).commit();
+//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago).commit();
+//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).commit();
+//        fm.beginTransaction().show(active).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial)
+                .add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga)
+                .add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago)
+                .add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).show(active).commit();
         /*
          * Usar esto si en el manifesto hay soporte para la actionBar
          */
@@ -87,6 +107,11 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
             LoaderManager.getInstance(this).initLoader(0, null, this);
         }
         refrescarQR();
+
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null) {
+//            Log.e(TAG, "User is signed in");
+//        }
 
 
     }
@@ -183,24 +208,26 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
         if (id == 0) {
 //            return new SimpleAsyncTask(this, QRFragment.getQrImageView());
             return new SimpleAsyncTask(this);
-
         }
-
         return null;
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Bitmap> loader, Bitmap data) {
-//        if (QRFragment_2.getQrImageView() != null) {
-//            QRFragment_2.getQrImageView().setImageBitmap(data);
-//        } else {
-//            Log.e(TAG, "ES NULLO");
-//        }
-        ((ImageView) findViewById(R.id.qr_imageView)).setImageBitmap(data);
+        if (QRFragment.getQrImageView() != null) {
+            Log.d(TAG, "onLoadFinished()");
+            QRFragment.getQrImageView().setImageBitmap(data);
+
+        } else {
+            Log.e(TAG, "onLoadFinished(): QR_IMAGE_VIEW IS NULL");
+        }
+//        ((ImageView) findViewById(R.id.qr_imageView)).setImageBitmap(data);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Bitmap> loader) {
-
+        // For now leave empty
     }
+
+
 }

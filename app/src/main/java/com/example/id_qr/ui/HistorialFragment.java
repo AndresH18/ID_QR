@@ -2,13 +2,21 @@ package com.example.id_qr.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.id_qr.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +24,7 @@ import com.example.id_qr.R;
  * create an instance of this fragment.
  */
 public class HistorialFragment extends Fragment {
+    private static final String TAG = "HistorialFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +34,15 @@ public class HistorialFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TextView textView;
+    private Button sunny;
+    private Button foggy;
+
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mConditionRef = mRootRef.child("votes");
+
+
 
     public HistorialFragment() {
         // Required empty public constructor
@@ -55,12 +73,46 @@ public class HistorialFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mConditionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String text = snapshot.getValue(String.class);
+                textView.setText(text);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_historial, container, false);
+//        return inflater.inflate(R.layout.fragment_historial, container, false);
+        View view = inflater.inflate(R.layout.fragment_historial, container, false);
+
+        textView = view.findViewById(R.id.textView_fragmentoHistorial_prueba);
+        sunny = view.findViewById(R.id.sunny_btn);
+        sunny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConditionRef.setValue("Sunny");
+            }
+        });
+        foggy = view.findViewById(R.id.foggy_btn);
+        foggy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConditionRef.setValue("Fuggy");
+            }
+        });
+
+
+        return view;
     }
 }

@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HistorialFragment">
+    android:background="@color/white"
+    tools:context=".ui.HistorialFragment"
+    android:clickable="true"
+    android:focusable="true">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView_fragmentoHistorial_prueba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fragmento_historial"
@@ -15,6 +19,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sunny_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunny"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView_fragmentoHistorial_prueba"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_fragmentoHistorial_prueba" />
+
+    <Button
+        android:id="@+id/foggy_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="foggy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_fragmentoHistorial_prueba"
+        app:layout_constraintTop_toBottomOf="@+id/textView_fragmentoHistorial_prueba" />
 
 
     <!--TODO: Replace Content Here-->

@@ -9,23 +9,23 @@
         android:id="@+id/fragmentQR"
         android:name="com.example.id_qr.ui.QRFragment"
         android:label="fragment_q_r"
-        tools:layout="@layout/fragment_q_r" />
+        tools:layout="@layout/qr_fragment" />
 
     <fragment
         android:id="@+id/fragmentPago"
         android:name="com.example.id_qr.ui.PagoFragment"
         android:label="fragment_pago"
-        tools:layout="@layout/fragment_pago" />
+        tools:layout="@layout/pago_fragment" />
 
     <fragment
         android:id="@+id/fragmentRecarga"
         android:name="com.example.id_qr.ui.RecargaFragment"
         android:label="fragment_recarga"
-        tools:layout="@layout/fragment_recarga" />
+        tools:layout="@layout/recarga_fragment" />
 
     <fragment
         android:id="@+id/fragmentHistorial"
         android:name="com.example.id_qr.ui.HistorialFragment"
         android:label="fragment_historial"
-        tools:layout="@layout/fragment_historial" />
+        tools:layout="@layout/historial_fragment" />
 </navigation>

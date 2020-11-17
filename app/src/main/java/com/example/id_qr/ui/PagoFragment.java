@@ -12,10 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.id_qr.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,7 +80,7 @@ public class PagoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_pago, container, false);
+        View view = inflater.inflate(R.layout.pago_fragment, container, false);
 
         Log.d(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
         btn_PagoNormal = (Button) view.findViewById(R.id.btn_pago_dia_normal);

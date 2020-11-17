@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,8 +20,6 @@ import androidx.loader.content.Loader;
 import com.example.id_qr.R;
 import com.example.id_qr.ui.back.SimpleAsyncTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Principal extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Bitmap> {
 

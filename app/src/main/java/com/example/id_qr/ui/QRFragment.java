@@ -1,7 +1,6 @@
 package com.example.id_qr.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,7 @@ public class QRFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_q_r, container, false);
+        View view = inflater.inflate(R.layout.qr_fragment, container, false);
 
         qrImageView = (ImageView) view.findViewById(R.id.qr_imageView);
 

@@ -43,8 +43,7 @@ public class HistorialFragment extends Fragment {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mConditionRef = mRootRef.child("votes/" +  user.getUid() );
-
+    private DatabaseReference mConditionRef = mRootRef.child("votes/" + user.getUid());
 
 
     public HistorialFragment() {

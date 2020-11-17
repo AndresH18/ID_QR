@@ -247,21 +247,21 @@ public class LoginMain extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        Log.i(TAG, "signInWithEmail:success");
+                        Log.d(TAG, "signInWithEmail:success");
 //                        FirebaseUser user = mAuth.getCurrentUser();
 
                         Log.i(TAG, "Declare intent for \"Principal\"");
 //
                         Intent intent = new Intent(LoginMain.this, Principal.class);
                         // start main Activity
-                        Log.i(TAG, "Start Intent for\"Principal\"");
+                        Log.d(TAG, "Start Intent for\"Principal\"");
                         startActivity(intent);
                         //finish login
                         finish();
                     } else {
                         // If log_in in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Log.i(TAG, "singInWithEmail:failure");
+                        Log.d(TAG, "singInWithEmail:failure");
                         Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show();
                     }
 

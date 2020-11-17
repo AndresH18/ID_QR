@@ -152,7 +152,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     private Runnable mRunnableQR = new Runnable() {
         @Override
         public void run() {
-            Log.i(TAG, "RUNNABLE: REFERESCAR QR");
+            Log.d(TAG, "RUNNABLE: REFERESCAR QR");
 //            QRFragment.refrescarQR();
 
             //TODO refrescar qr

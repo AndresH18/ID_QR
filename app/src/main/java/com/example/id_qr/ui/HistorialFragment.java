@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.id_qr.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,8 +41,9 @@ public class HistorialFragment extends Fragment {
     private Button sunny;
     private Button foggy;
 
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mConditionRef = mRootRef.child("votes");
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mConditionRef = mRootRef.child("votes/" +  user.getUid() );
 
 
 
@@ -101,14 +104,14 @@ public class HistorialFragment extends Fragment {
         sunny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConditionRef.setValue("Sunny");
+                mConditionRef.setValue("Yes");
             }
         });
         foggy = view.findViewById(R.id.foggy_btn);
         foggy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConditionRef.setValue("Fuggy");
+                mConditionRef.setValue("No");
             }
         });
 

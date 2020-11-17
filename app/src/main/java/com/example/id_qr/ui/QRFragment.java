@@ -75,7 +75,7 @@ public class QRFragment extends Fragment {
         ((Button)view.findViewById(R.id.buttonAAAa)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "AAAAAAAAAAAAAAAA");
+
             }
         });
 

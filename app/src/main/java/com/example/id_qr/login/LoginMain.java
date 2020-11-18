@@ -26,9 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
+
+    private static final String USER_EMAIL = "USER_EMAIL";
 
     private FirebaseAuth mAuth;
 
@@ -69,6 +72,7 @@ public class LoginMain extends AppCompatActivity {
         } else {
             Log.d(TAG, "Current user === null");
         }
+
     }
 
     @Override
@@ -82,9 +86,15 @@ public class LoginMain extends AppCompatActivity {
 
         startActionListener();
 
+
         //FIXME: delete on completion
-        editTextUser.setText("andres@eia.edu.co");
-        editTextPass.setText("Andres");
+        String user = getIntent().getStringExtra(USER_EMAIL);
+        if (user != null) {
+            editTextUser.setText(user);
+        } else {
+            editTextUser.setText("andres@eia.edu.co");
+            editTextPass.setText("Andres");
+        }
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -240,6 +250,7 @@ public class LoginMain extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
+//            Toast.makeText(context, "Conecting...", Toast.LENGTH_SHORT).show();
             // Create background thread to connect and get data
             mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -247,11 +258,12 @@ public class LoginMain extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        Log.d(TAG, "signInWithEmail:success");
 //                        FirebaseUser user = mAuth.getCurrentUser();
 
                         Log.i(TAG, "Declare intent for \"Principal\"");
-//
+
+                        Toast.makeText(context, "Redirecting...", Toast.LENGTH_LONG).show();
+                        //
                         Intent intent = new Intent(LoginMain.this, Principal.class);
                         // start main Activity
                         Log.d(TAG, "Start Intent for\"Principal\"");
@@ -261,7 +273,6 @@ public class LoginMain extends AppCompatActivity {
                     } else {
                         // If log_in in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Log.d(TAG, "singInWithEmail:failure");
                         Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show();
                     }
 

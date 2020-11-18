@@ -76,6 +76,7 @@ public class HistorialFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+//        mConditionRef.keepSynced(true);
         mConditionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

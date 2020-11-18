@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ID_QR</string>
+    <string name="app_name">ID QR</string>
     <string name="login_btn_txt">LOGIN</string>
     <string name="recover_password_btn_txt">RECUPERAR CONTRASEÑA</string>
     <string name="input_correo_txt">Correo</string>
@@ -33,4 +33,10 @@
     <string name="correo">Correo</string>
     <string name="logo_idqr">logo idqr</string>
     <string name="logo_u">logo u</string>
+
+    <string name="cerrar_sesion">Cerrar Sesion</string>
+    <string name="desea_cerrar_sesion">¿Desea Cerrar Sesión?</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="confirmar">Confirmar</string>
+
 </resources>

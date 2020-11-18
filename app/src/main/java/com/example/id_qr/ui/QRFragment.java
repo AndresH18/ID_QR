@@ -70,14 +70,6 @@ public class QRFragment extends Fragment {
 
         qrImageView = (ImageView) view.findViewById(R.id.qr_imageView);
 
-        //FIXME: DELETE
-        ((Button)view.findViewById(R.id.buttonAAAa)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         //refrescarQR();
 
         //TODO: Refrescar QR

@@ -24,7 +24,7 @@
 
 
     <item
-        android:id="@+id/icon_account"
+        android:id="@+id/account"
         android:contentDescription="Cuenta de Usuario"
         android:icon="@drawable/ic_account_circle_24"
         android:title="Usuario"
@@ -39,10 +39,7 @@
         android:id="@+id/contactar_soporte"
         android:contentDescription="Contactar Soporte"
         android:icon="@drawable/ic_contact_support_24"
-        android:title="Contactar Soporte"
-
-
-        />
+        android:title="Contactar Soporte" />
 
     <item
         android:id="@+id/cerrar_sesion"

@@ -16,12 +16,14 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.Random;
 
+
 public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
     private static final String TAG = "QR_AsyncTask";
 
-//    private ImageView imageView;
+    //TODO: Actualizar para que se consiga la hora de la base de datos para la generacion del QR
 
-    //    public SimpleAsyncTask(@NonNull Context context, ImageView imageView) {
+//    private ImageView imageView;
+//    public SimpleAsyncTask(@NonNull Context context, ImageView imageView) {
     public SimpleAsyncTask(@NonNull Context context) {
         super(context);
 //        this.imageView = imageView;
@@ -70,7 +72,7 @@ public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
             Log.d(TAG, "generar QR: SUCCESFULL");
             return bitmap;
         } catch (WriterException e) {
-            Log.e(TAG, "generar QR: FAILED",e);
+            Log.e(TAG, "generar QR: FAILED", e);
             Log.e(TAG, e.getLocalizedMessage());
         }
         return null;

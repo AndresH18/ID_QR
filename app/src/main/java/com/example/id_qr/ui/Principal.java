@@ -125,15 +125,19 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 
                 switch (position) {
                     case 0:
+                        Log.d(TAG, "ViewPager: page changed to\"" + "0" + " \", BottomNavigation: Selecting \"" + "QR" + "\"");
                         bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
                         break;
                     case 1:
+                        Log.d(TAG, "ViewPager: page changed to\"" + "1" + " \", BottomNavigation: Selecting \"" + "Pago" + "\"");
                         bottomNavigationView.setSelectedItemId(R.id.fragmentPago);
                         break;
                     case 2:
+                        Log.d(TAG, "ViewPager: page changed to\"" + "2" + " \", BottomNavigation: Selecting \"" + "Recarga" + "\"");
                         bottomNavigationView.setSelectedItemId(R.id.fragmentRecarga);
                         break;
                     case 3:
+                        Log.d(TAG, "ViewPager: page changed to\"" + "3" + " \", BottomNavigation: Selecting \"" + "Historial" + "\"");
                         bottomNavigationView.setSelectedItemId(R.id.fragmentHistorial);
                         break;
                     default:
@@ -174,23 +178,27 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
                     case R.id.fragmentQR:
 //                        fm.beginTransaction().hide(active).show(fragmentQR).commit();
 //                        active = fragmentQR;
+                        Log.d(TAG, "BottomNavigation: Item \"" + "QR" + "\" Selected, Selecting ViewPager\"" + "0" + "\"");
                         viewPager.setCurrentItem(0, false);
                         return true;
 
                     case R.id.fragmentPago:
 //                        fm.beginTransaction().hide(active).show(fragmentPago).commit();
 //                        active = fragmentPago;
+                        Log.d(TAG, "BottomNavigation: Item \"" + "Pago" + "\" Selected, Selecting ViewPager\"" + "1" + "\"");
                         viewPager.setCurrentItem(1, false);
                         return true;
 
                     case R.id.fragmentRecarga:
 //                        fm.beginTransaction().hide(active).show(fragmentRecarga).commit();
 //                        active = fragmentRecarga;
+                        Log.d(TAG, "BottomNavigation: Item \"" + "Recarga" + "\" Selected, Selecting ViewPager\"" + "2" + "\"");
                         viewPager.setCurrentItem(2, false);
                         return true;
                     case R.id.fragmentHistorial:
 //                        fm.beginTransaction().hide(active).show(fragmentHistorial).commit();
 //                        active = fragmentHistorial;
+                        Log.d(TAG, "BottomNavigation: Item \"" + "Historial" + "\" Selected, Selecting ViewPager\"" + "3" + "\"");
                         viewPager.setCurrentItem(3, false);
                         return true;
 //

@@ -234,7 +234,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     private void cerrarSesion() {
         user = mAuth.getCurrentUser();
         String email = user.getEmail();
-        Log.e(TAG, user.getEmail());
+//        Log.e(TAG, user.getEmail());
 //        FirebaseAuth.getInstance().signOut();
         mAuth.signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();

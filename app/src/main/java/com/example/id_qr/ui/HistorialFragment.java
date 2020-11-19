@@ -97,7 +97,7 @@ public class HistorialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_historial, container, false);
-        View view = inflater.inflate(R.layout.historial_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_historial, container, false);
 
         textView = view.findViewById(R.id.textView_fragmentoHistorial_prueba);
         sunny = view.findViewById(R.id.sunny_btn);

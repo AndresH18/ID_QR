@@ -38,5 +38,9 @@
     <string name="desea_cerrar_sesion">¿Desea Cerrar Sesión?</string>
     <string name="cancelar">Cancelar</string>
     <string name="confirmar">Confirmar</string>
+    <string name="next">Next</string>
+    <string name="cop">COP</string>
+    <string name="valor_a_recargar">Valor a Recargar</string>
+    <string name="metodo_de_pago">Metodo de Pago</string>
 
 </resources>

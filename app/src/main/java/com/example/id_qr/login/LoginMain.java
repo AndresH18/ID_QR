@@ -121,6 +121,7 @@ public class LoginMain extends AppCompatActivity {
                     user = editTextUser.getText().toString();
                     if (user.endsWith("@eia.edu.co")) {
                         pass = editTextPass.getText().toString();
+                        Toast.makeText(v.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                         /* StringBuilder sb = new StringBuilder();
                          * sb.append("user: ").append(editTextUser.getText().toString());
                          * sb.append("\n");

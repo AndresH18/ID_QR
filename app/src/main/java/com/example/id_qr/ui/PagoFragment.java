@@ -80,7 +80,7 @@ public class PagoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.pago_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_pago, container, false);
 
         Log.d(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
         btn_PagoNormal = (Button) view.findViewById(R.id.btn_pago_dia_normal);

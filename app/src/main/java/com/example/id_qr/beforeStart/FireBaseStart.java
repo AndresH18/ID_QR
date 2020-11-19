@@ -18,6 +18,6 @@ public class FireBaseStart extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        Log.d("HEHEHEHEHEHEHEHEHHEHEHE", "sjdksjdksjdksjdksjdkjskdjskdjksjdskjksjksjdksjdksjdksjdksjdks");
+        Log.d(TAG, "Firebase.getInstancce.setPersistance == true");
     }
 }

@@ -16,9 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.id_qr.R;
 import com.example.id_qr.login.LoginMain;
@@ -27,10 +30,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class Principal extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Bitmap> {
     private static final String TAG = "Principal";
+
+    /**
+     * The number of pages of this app
+     */
+    private static final int NUM_PAGES = 4;
+
+    /**
+     * The pager widget, which handles animation and allows swiping horizontally to access previous
+     * and next wizard steps.
+     */
+    private ViewPager2 viewPager;
+
+    /**
+     * The pager adapter, which provides the pages to the view pager widget.
+     */
+    private FragmentStateAdapter pagerAdapter;
+
 
     private static final String EMAIL_KEY = "USER_EMAIL";
 
@@ -89,33 +108,46 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
         mRunnableQR.run();
         Log.d(TAG, "mRunnableQR passed");
 
-        /*usar esto en vez de Navcontroller y NavigationUI*/
+        // Instantiate a ViewPager2 and a PagerAdapter.
+        viewPager = findViewById(R.id.pager);
+        pagerAdapter = new ScreenSlidePagerAdapter(this, fragmentQR, fragmentPago, fragmentRecarga, fragmentHistorial);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            /**
+             * This method will be invoked when a new page becomes selected. Animation is not
+             * necessarily complete.
+             *
+             * @param position Position index of the new selected page.
+             */
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
 
-//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial).commit();
-//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga).commit();
-//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago).commit();
-//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).commit();
-//        fm.beginTransaction().show(active).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial)
-                .add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga)
-                .add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago)
-                .add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).show(active).commit();
-        /*
-         * Usar esto si en el manifesto hay soporte para la actionBar
-         */
-        //AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-        //        R.id.fragmentQR, R.id.fragmentPago, R.id.fragmentRecarga, R.id.fragmentHistorial)
-        //        .build();
+                switch (position) {
+                    case 0:
+                        bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
+                        break;
+                    case 1:
+                        bottomNavigationView.setSelectedItemId(R.id.fragmentPago);
+                        break;
+                    case 2:
+                        bottomNavigationView.setSelectedItemId(R.id.fragmentRecarga);
+                        break;
+                    case 3:
+                        bottomNavigationView.setSelectedItemId(R.id.fragmentHistorial);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
-        //// NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        /*
-         * Usar esto si en el manifesto hay soporte para la actionBar
-         */
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        ////NavigationUI.setupWithNavController(navView, navController);
+//        fm.beginTransaction().add(R.id.nav_host_fragment, fragmentHistorial, "4").hide(fragmentHistorial)
+//                .add(R.id.nav_host_fragment, fragmentRecarga, "3").hide(fragmentRecarga)
+//                .add(R.id.nav_host_fragment, fragmentPago, "2").hide(fragmentPago)
+//                .add(R.id.nav_host_fragment, fragmentQR, "1").hide(fragmentQR).show(active).commit();
 
-//        repeater();
 
 //        if(getSupportLoaderManager().getLoader(0)!=null){
 //            getSupportLoaderManager().initLoader(0,null,this);
@@ -129,6 +161,45 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 //        if (user != null) {
 //            Log.e(TAG, "User is signed in");
 //        }
+
+
+        /**
+         * Bottom Navigation Behavior
+         */
+//        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.fragmentQR:
+//                        fm.beginTransaction().hide(active).show(fragmentQR).commit();
+//                        active = fragmentQR;
+                        viewPager.setCurrentItem(0, false);
+                        return true;
+
+                    case R.id.fragmentPago:
+//                        fm.beginTransaction().hide(active).show(fragmentPago).commit();
+//                        active = fragmentPago;
+                        viewPager.setCurrentItem(1, false);
+                        return true;
+
+                    case R.id.fragmentRecarga:
+//                        fm.beginTransaction().hide(active).show(fragmentRecarga).commit();
+//                        active = fragmentRecarga;
+                        viewPager.setCurrentItem(2, false);
+                        return true;
+                    case R.id.fragmentHistorial:
+//                        fm.beginTransaction().hide(active).show(fragmentHistorial).commit();
+//                        active = fragmentHistorial;
+                        viewPager.setCurrentItem(3, false);
+                        return true;
+//
+//                default:
+//                    return false;
+                }
+                return false;
+            }
+        });
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -172,34 +243,6 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
             }
         });
 
-//        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.fragmentQR:
-                        fm.beginTransaction().hide(active).show(fragmentQR).commit();
-                        active = fragmentQR;
-                        return true;
-
-                    case R.id.fragmentPago:
-                        fm.beginTransaction().hide(active).show(fragmentPago).commit();
-                        active = fragmentPago;
-                        return true;
-
-                    case R.id.fragmentRecarga:
-                        fm.beginTransaction().hide(active).show(fragmentRecarga).commit();
-                        active = fragmentRecarga;
-                        return true;
-                    case R.id.fragmentHistorial:
-                        fm.beginTransaction().hide(active).show(fragmentHistorial).commit();
-                        active = fragmentHistorial;
-                        return true;
-                }
-                return false;
-            }
-        });
-
 
     }
 
@@ -214,21 +257,21 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     @Override
     public void onBackPressed() {
 
-        if (bottomNavigationView.getSelectedItemId() == R.id.fragmentQR) {
+//        if (bottomNavigationView.getSelectedItemId() == R.id.fragmentQR) {
 
-            if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                backToast.cancel();
-                super.onBackPressed();
-                System.exit(0);
-                return;
-            } else {
-                backToast = Toast.makeText(Principal.this, "Press back again to exit", Toast.LENGTH_SHORT);
-                backToast.show();
-            }
-            backPressedTime = System.currentTimeMillis();
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            System.exit(0);
+            return;
         } else {
-            bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
+            backToast = Toast.makeText(Principal.this, "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
         }
+        backPressedTime = System.currentTimeMillis();
+//        } else {
+//            bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
+//        }
     }
 
     private void cerrarSesion() {
@@ -344,4 +387,60 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     }
 
 
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+        private static final String TAG = "screenSlidePagerAdapter";
+
+        private Fragment fragmentQR_;
+        private Fragment fragmentPago_;
+        private Fragment fragmentRecarga_;
+        private Fragment fragmentHistorial_;
+
+        public ScreenSlidePagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
+
+        public ScreenSlidePagerAdapter(FragmentActivity fa, Fragment fragmentQR, Fragment fragmentPago, Fragment fragmentRecarga, Fragment fragmentHistorial) {
+            super(fa);
+            this.fragmentQR_ = fragmentQR;
+            this.fragmentPago_ = fragmentPago;
+            this.fragmentRecarga_ = fragmentRecarga;
+            this.fragmentHistorial_ = fragmentHistorial;
+
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position) {
+                case 0:
+                    Log.e(TAG, "fragmentoQR");
+//                    bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
+                    return fragmentQR_;
+                case 1:
+                    Log.e(TAG, "fragmentoPago");
+//                    bottomNavigationView.setSelectedItemId(R.id.fragmentPago);
+                    return fragmentPago_;
+                case 2:
+                    Log.e(TAG, "fragmentoRecarga");
+//                    bottomNavigationView.setSelectedItemId(R.id.fragmentRecarga);
+                    return fragmentRecarga_;
+                case 3:
+                    Log.e(TAG, "fragmentoHistorial");
+//                    bottomNavigationView.setSelectedItemId(R.id.fragmentHistorial);
+                    return fragmentHistorial_;
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return NUM_PAGES;
+        }
+
+    }
 }

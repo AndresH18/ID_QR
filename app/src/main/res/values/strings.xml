@@ -42,5 +42,12 @@
     <string name="cop">COP</string>
     <string name="valor_a_recargar">Valor a Recargar</string>
     <string name="metodo_de_pago">Metodo de Pago</string>
+    <string name="buscar_en_guardados">Buscar en Guardados</string>
+    <string-array name="tipos_de_pago">
+        <item>Credito</item>
+        <item>Debito</item>
+        <item>Pse</item>
+        <item>Tesoreria</item>
+    </string-array>
 
 </resources>

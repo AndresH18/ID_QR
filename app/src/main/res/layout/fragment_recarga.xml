@@ -21,10 +21,10 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/metodo_pago_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
+                android:layout_marginStart="60dp"
                 android:layout_marginTop="152dp"
                 android:text="@string/metodo_de_pago"
                 android:textSize="18sp"
@@ -32,58 +32,72 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/opciones_pago_spinner"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="60dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/metodo_pago_textView" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/valor_recarga_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="70dp"
                 android:text="@string/valor_a_recargar"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintStart_toStartOf="@+id/metodo_pago_textView"
+                app:layout_constraintTop_toBottomOf="@+id/opciones_pago_spinner" />
 
             <EditText
-                android:id="@+id/editTextNumberPassword"
+                android:id="@+id/valor_a_recargar_editText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:autofillHints=""
                 android:ems="10"
-                android:inputType="numberPassword"
+                android:hint="@string/valor_a_recargar"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/spinner"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintStart_toStartOf="@+id/opciones_pago_spinner"
+                app:layout_constraintTop_toBottomOf="@+id/valor_recarga_textView" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tipo_moneda_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cop"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextNumberPassword"
+                app:layout_constraintBottom_toBottomOf="@+id/valor_a_recargar_editText"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextNumberPassword"
-                app:layout_constraintTop_toTopOf="@+id/editTextNumberPassword" />
+                app:layout_constraintStart_toEndOf="@+id/valor_a_recargar_editText"
+                app:layout_constraintTop_toTopOf="@+id/valor_a_recargar_editText" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_next_recarga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="124dp"
                 android:text="@string/next"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumberPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/valor_a_recargar_editText" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_guardados_recarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="@string/buscar_en_guardados"
+                app:layout_constraintBottom_toTopOf="@+id/opciones_pago_spinner"
+                app:layout_constraintStart_toEndOf="@+id/metodo_pago_textView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

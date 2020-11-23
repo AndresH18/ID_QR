@@ -100,6 +100,22 @@ public class HistorialFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_historial, container, false);
 
         textView = view.findViewById(R.id.textView_fragmentoHistorial_prueba);
+
+        TextView ttt = view.findViewById(R.id.textView_fragmentoHistorial_prueba_2);
+        DatabaseReference dd = FirebaseDatabase.getInstance().getReference().child("option").child("0");
+        dd.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ttt.setText(snapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         sunny = view.findViewById(R.id.sunny_btn);
         sunny.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +127,9 @@ public class HistorialFragment extends Fragment {
         foggy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConditionRef.setValue("No");
+//                mConditionRef.setValue("No");
+                DatabaseReference d = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("A");
+                d.setValue("hola");
             }
         });
 

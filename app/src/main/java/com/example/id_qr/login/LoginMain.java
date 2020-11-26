@@ -2,6 +2,7 @@ package com.example.id_qr.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginMain extends AppCompatActivity {
     private static final String TAG = "LoginMain";
@@ -40,10 +40,12 @@ public class LoginMain extends AppCompatActivity {
     private Toast backToast;
     private long backPressedTime = 0;
 
+    private ConstraintLayout layout;
     private EditText editTextUser;
     private TextView editTextPass;
     private Button btn_login;
     private Button btn_recuperarPassword;
+
 
     private String user;
     private String pass;
@@ -79,10 +81,13 @@ public class LoginMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
         editTextUser = findViewById(R.id.login_username_editText);
         editTextPass = (EditText) findViewById(R.id.login_password_editText);
         btn_login = findViewById(R.id.login_btn_layout_login);
         btn_recuperarPassword = findViewById(R.id.recover_password_btn_layout_login);
+        layout = findViewById(R.id.scrollView);
+
 
         startActionListener();
 
@@ -92,11 +97,12 @@ public class LoginMain extends AppCompatActivity {
         if (user != null) {
             editTextUser.setText(user);
         } else {
-            editTextUser.setText("andres@eia.edu.co");
+//            editTextUser.setText("andres@eia.edu.co");
             editTextPass.setText("Andres");
         }
 
         mAuth = FirebaseAuth.getInstance();
+
     }
 
     public void recoverPassword(View view) {
@@ -109,6 +115,28 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void startActionListener() {
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                hideKeyBoard(v);
+            }
+        });
+        editTextUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    hideKeyBoard(v);
+                }
+            }
+        });
+        editTextPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    hideKeyBoard(v);
+                }
+            }
+        });
         btn_login.setOnClickListener(new View.OnClickListener() {
             /**
              * Called when a view has been clicked.
@@ -160,20 +188,6 @@ public class LoginMain extends AppCompatActivity {
 
                     // "user: " + editTextUser.getText().toString() + "\npassword: " + editTextPass.getText().toString()
                 }
-            }
-        });
-
-        editTextPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            /**
-             * Called when the focus state of a view has changed.
-             *
-             * @param v        The view whose state has changed.
-             * @param hasFocus The new focus state of v.
-             */
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
             }
         });
         editTextUser.setOnKeyListener(new View.OnKeyListener() {

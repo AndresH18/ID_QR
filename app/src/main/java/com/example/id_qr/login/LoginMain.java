@@ -89,6 +89,7 @@ public class LoginMain extends AppCompatActivity {
         editTextPass = (EditText) findViewById(R.id.login_password_editText);
         btn_login = findViewById(R.id.login_btn_layout_login);
         btn_recuperarPassword = findViewById(R.id.recover_password_btn_layout_login);
+
         background_layout = findViewById(R.id.scrollView);
         user_layout = findViewById(R.id.textInputLayout_user_field);
 
@@ -130,19 +131,22 @@ public class LoginMain extends AppCompatActivity {
         editTextUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && !editTextPass.isFocused()) {
-                    Log.e(TAG, "editTextUser, hide keyboard");
-                    hideKeyBoard(v);
-
-                }
+//                if ((!hasFocus) && !editTextPass.isFocused()) {
+//                    Log.d(TAG, "editTextUser, hide keyboard");
+//                    hideKeyBoard(v);
+//
+//                }
                 if (!hasFocus) {
-                    if (!editTextUser.getText().toString().endsWith("@eia.edu.co")) {
+                    if (editTextUser.getText().toString().equals("")) {
+                        user_layout.setError(null);
+                    } else if (!editTextUser.getText().toString().endsWith("@eia.edu.co")) {
                         user_layout.setError("Correo no autorizado");
                     } else {
                         user_layout.setError(null);
                     }
                     if (!editTextPass.isFocused()) {
-
+                        Log.d(TAG, "editTextUser, hide keyboard");
+                        hideKeyBoard(v);
                     }
                 }
             }
@@ -151,7 +155,7 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if ((!hasFocus) && !editTextUser.isFocused()) {
-                    Log.e(TAG, "editTextPassword, hide keyboard");
+                    Log.d(TAG, "editTextPassword, hide keyboard");
                     hideKeyBoard(v);
                 }
             }
@@ -190,11 +194,11 @@ public class LoginMain extends AppCompatActivity {
 //
 //                            // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
 //                            // make intent for main activity
-//                            Log.i(TAG, "Declare intent for \"Principal\"");
+//                            Log.d(TAG, "Declare intent for \"Principal\"");
 //
 //                            Intent intent = new Intent(LoginMain.this, Principal.class);
 //                            // start main Activity
-//                            Log.i(TAG, "Start Intent for\"Principal\"");
+//                            Log.d(TAG, "Start Intent for\"Principal\"");
 //                            startActivity(intent);
 //                            //finish login
 //                            finish();
@@ -258,7 +262,7 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void log_in(String user, String pass, Context context) {
-        Log.i(TAG, "signing in...");
+        Log.d(TAG, "signing in...");
 
         if (user.isEmpty()) {
             user = " ";
@@ -283,7 +287,7 @@ public class LoginMain extends AppCompatActivity {
                         Log.d(TAG, "signInWithEmail:success");
 //                        FirebaseUser user = mAuth.getCurrentUser();
 
-                        Log.i(TAG, "Declare intent for \"Principal\"");
+                        Log.d(TAG, "Declare intent for \"Principal\"");
 
                         Toast.makeText(context, "Redirecting...", Toast.LENGTH_LONG).show();
                         //

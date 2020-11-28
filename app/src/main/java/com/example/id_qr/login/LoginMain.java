@@ -24,6 +24,7 @@ import com.example.id_qr.R;
 import com.example.id_qr.ui.Principal;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +41,9 @@ public class LoginMain extends AppCompatActivity {
     private Toast backToast;
     private long backPressedTime = 0;
 
-    private ConstraintLayout layout;
+    private ConstraintLayout background_layout;
+    private TextInputLayout user_layout;
+    private TextInputLayout password_layout;
     private EditText editTextUser;
     private TextView editTextPass;
     private Button btn_login;
@@ -86,7 +89,8 @@ public class LoginMain extends AppCompatActivity {
         editTextPass = (EditText) findViewById(R.id.login_password_editText);
         btn_login = findViewById(R.id.login_btn_layout_login);
         btn_recuperarPassword = findViewById(R.id.recover_password_btn_layout_login);
-        layout = findViewById(R.id.scrollView);
+        background_layout = findViewById(R.id.scrollView);
+        user_layout = findViewById(R.id.textInputLayout_user_field);
 
 
         startActionListener();
@@ -115,24 +119,39 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void startActionListener() {
-        layout.setOnClickListener(new View.OnClickListener() {
+        background_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                hideKeyBoard(v);
+//                layout.requestFocus();
+
+                hideKeyBoard(v);
             }
         });
         editTextUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
+                if ((!hasFocus) && !editTextPass.isFocused()) {
+                    Log.e(TAG, "editTextUser, hide keyboard");
                     hideKeyBoard(v);
+
+                }
+                if (!hasFocus) {
+                    if (!editTextUser.getText().toString().endsWith("@eia.edu.co")) {
+                        user_layout.setError("Correo no autorizado");
+                    } else {
+                        user_layout.setError(null);
+                    }
+                    if (!editTextPass.isFocused()) {
+
+                    }
                 }
             }
         });
         editTextPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
+                if ((!hasFocus) && !editTextUser.isFocused()) {
+                    Log.e(TAG, "editTextPassword, hide keyboard");
                     hideKeyBoard(v);
                 }
             }
@@ -238,17 +257,6 @@ public class LoginMain extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
-    private void hideKeyBoard(View view) {
-        // Hide the keyboard when the button is pushed.
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-
     private void log_in(String user, String pass, Context context) {
         Log.i(TAG, "signing in...");
 
@@ -299,6 +307,16 @@ public class LoginMain extends AppCompatActivity {
 
         }
 
+    }
+
+    private void hideKeyBoard(View view) {
+        // Hide the keyboard when the button is pushed.
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
 }

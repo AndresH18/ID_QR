@@ -45,15 +45,15 @@
                 android:id="@+id/logo_idqr_layout_login"
                 android:layout_width="129dp"
                 android:layout_height="123dp"
-                android:layout_marginStart="39dp"
+                android:layout_marginEnd="38dp"
                 android:adjustViewBounds="true"
                 android:clickable="false"
+                android:contentDescription="@string/logo_idqr"
                 android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="@+id/logo_U_layout_login"
-                app:layout_constraintStart_toEndOf="@+id/logo_U_layout_login"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/logo_U_layout_login"
-                app:srcCompat="@drawable/logo_idqr"
-                android:contentDescription="@string/logo_idqr" />
+                app:srcCompat="@drawable/logo_idqr" />
 
             <Button
                 android:id="@+id/login_btn_layout_login"

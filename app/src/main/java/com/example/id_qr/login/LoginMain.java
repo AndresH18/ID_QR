@@ -92,6 +92,7 @@ public class LoginMain extends AppCompatActivity {
 
         background_layout = findViewById(R.id.scrollView);
         user_layout = findViewById(R.id.textInputLayout_user_field);
+        password_layout = findViewById(R.id.textInputLayout_password_field);
 
 
         startActionListener();
@@ -102,7 +103,7 @@ public class LoginMain extends AppCompatActivity {
         if (user != null) {
             editTextUser.setText(user);
         } else {
-//            editTextUser.setText("andres@eia.edu.co");
+            editTextUser.setText("andres@eia.edu.co");
             editTextPass.setText("Andres");
         }
 
@@ -154,9 +155,28 @@ public class LoginMain extends AppCompatActivity {
         editTextPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && !editTextUser.isFocused()) {
-                    Log.d(TAG, "editTextPassword, hide keyboard");
-                    hideKeyBoard(v);
+//                if ((!hasFocus) && !editTextUser.isFocused()) {
+//                    Log.d(TAG, "editTextPassword, hide keyboard");
+//                    hideKeyBoard(v);
+//                }
+                if (!hasFocus) {
+//                    if (editTextPass.getText().toString().equals("")) {
+//                        password_layout.setError(null);
+//                    } else if (!editTextPass.getText().toString().endsWith("@eia.edu.co")) {
+//                        password_layout.setError("Correo no autorizado");
+//                    } else {
+//                        password_layout.setError(null);
+//                    }
+                    if (editTextPass.getText().toString().isEmpty()) {
+                        password_layout.setError(" ");
+
+                    } else {
+                        password_layout.setError(null);
+                    }
+                    if (!editTextUser.isFocused()) {
+                        Log.d(TAG, "editTextPassword, hide keyboard");
+                        hideKeyBoard(v);
+                    }
                 }
             }
         });
@@ -172,7 +192,7 @@ public class LoginMain extends AppCompatActivity {
                     user = editTextUser.getText().toString();
                     if (user.endsWith("@eia.edu.co")) {
                         pass = editTextPass.getText().toString();
-                        Toast.makeText(v.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(v.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                         /* StringBuilder sb = new StringBuilder();
                          * sb.append("user: ").append(editTextUser.getText().toString());
                          * sb.append("\n");
@@ -262,21 +282,14 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void log_in(String user, String pass, Context context) {
-        Log.d(TAG, "signing in...");
-
-        if (user.isEmpty()) {
-            user = " ";
-        }
-        if (pass.isEmpty()) {
-            pass = " ";
-        }
-
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected()) {
+//        ConnectivityManager connMgr = (ConnectivityManager)
+//                getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//
+//        if (networkInfo != null && networkInfo.isConnected()) {
+        if (isInternetConected() && !pass.isEmpty() && !user.isEmpty()) {
+            Log.d(TAG, "signing in...");
 //            Toast.makeText(context, "Conecting...", Toast.LENGTH_SHORT).show();
             // Create background thread to connect and get data
             mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -305,6 +318,13 @@ public class LoginMain extends AppCompatActivity {
 
                 }
             });
+        } else if (user.isEmpty() || pass.isEmpty()) {
+            if (user.isEmpty()) {
+
+            }
+            if (pass.isEmpty()) {
+
+            }
         } else {
             Log.w(TAG, "NO INTERNET CONECTION");
             Toast.makeText(context, "No se detecto Conexi" + (char) 243 + "n", Toast.LENGTH_LONG).show();
@@ -321,6 +341,15 @@ public class LoginMain extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    private boolean isInternetConected() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

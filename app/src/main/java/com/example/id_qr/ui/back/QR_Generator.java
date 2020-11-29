@@ -9,6 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -17,14 +23,14 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.util.Random;
 
 
-public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
+public class QR_Generator extends AsyncTaskLoader<Bitmap> {
     private static final String TAG = "QR_AsyncTask";
 
     //TODO: Actualizar para que se consiga la hora de la base de datos para la generacion del QR
 
 //    private ImageView imageView;
 //    public SimpleAsyncTask(@NonNull Context context, ImageView imageView) {
-    public SimpleAsyncTask(@NonNull Context context) {
+    public QR_Generator(@NonNull Context context) {
         super(context);
 //        this.imageView = imageView;
     }
@@ -52,6 +58,23 @@ public class SimpleAsyncTask extends AsyncTaskLoader<Bitmap> {
         for (int i = 0; i < 30; i++) {
             sb.append(r.nextInt(101));
         }
+
+//        DatabaseReference a = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
+//        a.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                double offset = snapshot.getValue(Double.class);
+//                double estimated = System.currentTimeMillis() - offset;
+//
+//                Log.e(TAG, String.valueOf(estimated));
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
         return sb.toString();
     }
 

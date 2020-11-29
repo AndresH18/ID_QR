@@ -2,6 +2,8 @@ package com.example.id_qr.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,6 +14,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.id_qr.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +41,9 @@ public class PagoFragment extends Fragment {
 //    private FirebaseAuth mAuth;
 //    private FirebaseUser mUser;
 //    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final DatabaseReference rootReference = database.getReference();
+    private final DatabaseReference userReference = rootReference.child("Pruebas2").child("users");
 
     private Button btn_PagoNormal;
     private Button btn_PagoDia;
@@ -111,7 +121,7 @@ public class PagoFragment extends Fragment {
     }
 
     private void pagoNormal() {
-        System.out.println("Pago Dia Normal");
+        Log.d(TAG, "pago Normal");
 
 //        if (mUser != null) {
 //            // Agregar a fecha
@@ -120,11 +130,25 @@ public class PagoFragment extends Fragment {
     }
 
     private void pagoDia() {
-        System.out.println("Pago Dia Completo");
+        Log.d(TAG, "pago Dia");
+
+        userReference.child("3").setValue("ANNDREs").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.e(TAG, "COMPLETE");
+            }
+        });
+//        userReference.child("3").setValue("ANNDREs", new DatabaseReference.CompletionListener() {
+//            @Override
+//            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+//
+//            }
+//        });
+
     }
 
     private void pagoTransporte() {
-        System.out.println("Pago Transporte");
+        Log.d(TAG, "pago transporte");
     }
 
 
@@ -172,5 +196,16 @@ public class PagoFragment extends Fragment {
             }
         });
     }
+
+//    public void pagoNormal(View v){
+//        Log.e(TAG, "HERE");
+//    }
+//
+//    public void pagoDia(View v){
+//
+//    }
+//    public void pagoTransporte(View v){
+//
+//    }
 
 }

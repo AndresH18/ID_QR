@@ -25,7 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.id_qr.R;
 import com.example.id_qr.login.LoginMain;
-import com.example.id_qr.ui.back.SimpleAsyncTask;
+import com.example.id_qr.ui.back.QR_Generator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,14 +67,14 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
     private long backPressedTime;
     private Toast backToast;
 
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
-    private Fragment fragmentQR = new QRFragment();
-    private Fragment fragmentPago = new PagoFragment();
-    private Fragment fragmentRecarga = new RecargaFragment();
-    private Fragment fragmentHistorial = new HistorialFragment();
-    private FragmentManager fm = getSupportFragmentManager();
-    private Fragment active = fragmentQR;
+    private final Fragment fragmentQR = new QRFragment();
+    private final Fragment fragmentPago = new PagoFragment();
+    private final Fragment fragmentRecarga = new RecargaFragment();
+    private final Fragment fragmentHistorial = new HistorialFragment();
+    private final FragmentManager fm = getSupportFragmentManager();
+//    private Fragment active = fragmentQR;
 
     @Override
     protected void onDestroy() {
@@ -311,7 +311,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
         mHandler.postDelayed(mRunnableQR, 10);
     }*/
 
-    private Runnable mRunnableQR = new Runnable() {
+    private final Runnable mRunnableQR = new Runnable() {
         @Override
         public void run() {
             Log.d(TAG, "RUNNABLE: REFERESCAR QR");
@@ -373,7 +373,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 
         if (id == 0) {
 //            return new SimpleAsyncTask(this, QRFragment.getQrImageView());
-            return new SimpleAsyncTask(this);
+            return new QR_Generator(this);
         }
         return null;
     }
@@ -400,17 +400,13 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
      */
-    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+    private static class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         private static final String TAG = "screenSlidePagerAdapter";
 
-        private Fragment fragmentQR_;
-        private Fragment fragmentPago_;
-        private Fragment fragmentRecarga_;
-        private Fragment fragmentHistorial_;
-
-        public ScreenSlidePagerAdapter(FragmentActivity fa) {
-            super(fa);
-        }
+        private final Fragment fragmentQR_;
+        private final Fragment fragmentPago_;
+        private final Fragment fragmentRecarga_;
+        private final Fragment fragmentHistorial_;
 
         public ScreenSlidePagerAdapter(FragmentActivity fa, Fragment fragmentQR, Fragment fragmentPago, Fragment fragmentRecarga, Fragment fragmentHistorial) {
             super(fa);
@@ -426,19 +422,19 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    Log.e(TAG, "fragmentoQR");
+                    Log.d(TAG, "fragmentoQR");
 //                    bottomNavigationView.setSelectedItemId(R.id.fragmentQR);
                     return fragmentQR_;
                 case 1:
-                    Log.e(TAG, "fragmentoPago");
+                    Log.d(TAG, "fragmentoPago");
 //                    bottomNavigationView.setSelectedItemId(R.id.fragmentPago);
                     return fragmentPago_;
                 case 2:
-                    Log.e(TAG, "fragmentoRecarga");
+                    Log.d(TAG, "fragmentoRecarga");
 //                    bottomNavigationView.setSelectedItemId(R.id.fragmentRecarga);
                     return fragmentRecarga_;
                 case 3:
-                    Log.e(TAG, "fragmentoHistorial");
+                    Log.d(TAG, "fragmentoHistorial");
 //                    bottomNavigationView.setSelectedItemId(R.id.fragmentHistorial);
                     return fragmentHistorial_;
                 default:

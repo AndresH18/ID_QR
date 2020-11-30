@@ -1,9 +1,8 @@
 package com.example.id_qr.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -14,11 +13,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.id_qr.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseError;
+import com.example.id_qr.data_models.Pago;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,12 +43,16 @@ public class PagoFragment extends Fragment {
     private String mParam2;
 
 
-//    private FirebaseAuth mAuth;
+    //    private FirebaseAuth mAuth;
 //    private FirebaseUser mUser;
 //    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private final DatabaseReference rootReference = database.getReference();
-    private final DatabaseReference userReference = rootReference.child("Pruebas2").child("users");
+    private final DatabaseReference userReference = rootReference.child("Pruebas").child("users").child(firebaseUser.getUid());
+    private final DatabaseReference parkingReference = userReference.child("Parqueadero");
+    private final DatabaseReference historialReference = parkingReference.child("Historial");
+
 
     private Button btn_PagoNormal;
     private Button btn_PagoDia;
@@ -120,8 +129,53 @@ public class PagoFragment extends Fragment {
         return view;
     }
 
+
     private void pagoNormal() {
         Log.d(TAG, "pago Normal");
+        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Normal")
+                .setMessage("¿Pagar Parqueadero?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Normal: \"CANCEL\"");
+            }
+        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Normal: \"ACCEPT\"");
+                //TODO
+            }
+        });
+
+        LocalDateTime dateTime = LocalDateTime.now();
+//        String year = String.valueOf(dateTime.getYear());
+//        String month = String.valueOf(dateTime.getMonthValue());
+//        String day = String.valueOf(dateTime.getDayOfMonth());
+//        String hour = String.valueOf(dateTime.getHour());
+//        String minute = String.valueOf(dateTime.getMinute());
+//        String second = String.valueOf(dateTime.getSecond());
+//
+//        int date = Integer.parseInt(year.concat(month).concat(day));
+//        int time = Integer.parseInt(hour.concat(minute).concat(second));
+//
+//
+//        final DatabaseReference dateReference = historialReference.child(year.concat(month).concat(day));
+//        final DatabaseReference timeReference = dateReference.child(hour.concat(minute).concat(second));
+
+        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
+        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
+        Log.d(TAG, String.valueOf(date));
+        Log.d(TAG, String.valueOf(time));
+
+        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
+        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Event", new Pago("Normal"));
+        data.put("Timestamp", ServerValue.TIMESTAMP);
+
+        timeReference.setValue(data);
+
+
 
 //        if (mUser != null) {
 //            // Agregar a fecha
@@ -132,23 +186,80 @@ public class PagoFragment extends Fragment {
     private void pagoDia() {
         Log.d(TAG, "pago Dia");
 
-        userReference.child("3").setValue("ANNDREs").addOnCompleteListener(new OnCompleteListener<Void>() {
+        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Dia")
+                .setMessage("¿Pagar Dia?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.e(TAG, "COMPLETE");
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Dia: \"CANCEL\"");
+            }
+        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Dia: \"ACCEPT\"");
+                //TODO
             }
         });
-//        userReference.child("3").setValue("ANNDREs", new DatabaseReference.CompletionListener() {
+
+//        userReference.child("3").setValue("ANNDREs").addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                Log.e(TAG, "COMPLETE");
+//            }
+//        });
+//        userReference.child("3").setValue(new User("Pato", "Hoyos", 27), new DatabaseReference.CompletionListener() {
 //            @Override
 //            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 //
 //            }
 //        });
+        LocalDateTime dateTime = LocalDateTime.now();
+        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
+        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
+        Log.d(TAG, String.valueOf(date));
+        Log.d(TAG, String.valueOf(time));
+
+        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
+        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Event", new Pago("Dia"));
+        data.put("Timestamp", ServerValue.TIMESTAMP);
+
+        timeReference.setValue(data);
 
     }
 
     private void pagoTransporte() {
-        Log.d(TAG, "pago transporte");
+        Log.d(TAG, "pago Transporte");
+
+        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Transporte")
+                .setMessage("¿Pagar Transporte?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Transporte: \"Cancel\"");
+            }
+        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Pago Transporte: \"Accept\"");
+                //TODO
+            }
+        });
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
+        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
+        Log.d(TAG, String.valueOf(date));
+        Log.d(TAG, String.valueOf(time));
+
+        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
+        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Event", new Pago("Transporte"));
+        data.put("Timestamp", ServerValue.TIMESTAMP);
+
+        timeReference.setValue(data);
     }
 
 

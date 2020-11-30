@@ -228,7 +228,6 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
                         return true;
                     case R.id.cerrar_sesion:
                         Log.d(TAG, "Item Cerrar Sesion");
-                        //IMPROVE: Style
                         new MaterialAlertDialogBuilder(Principal.this).setTitle(getString(R.string.cerrar_sesion))
                                 .setMessage(getString(R.string.desea_cerrar_sesion))
                                 .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {

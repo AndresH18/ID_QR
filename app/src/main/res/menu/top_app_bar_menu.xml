@@ -25,26 +25,27 @@
 
     <item
         android:id="@+id/account"
-        android:contentDescription="Cuenta de Usuario"
+        android:contentDescription="@string/user_account"
         android:icon="@drawable/ic_account_circle_24"
-        android:title="Usuario"
+        android:title="@string/user"
         app:showAsAction="always" />
     <item
         android:id="@+id/ayuda"
-        android:contentDescription="Ayuda"
+        android:contentDescription="@string/ayuda"
         android:icon="@drawable/ic_help_center_24"
-        android:title="Ayuda" />
+        android:title="@string/ayuda"
+        />
 
     <item
         android:id="@+id/contactar_soporte"
-        android:contentDescription="Contactar Soporte"
+        android:contentDescription="@string/contactar_soporte"
         android:icon="@drawable/ic_contact_support_24"
-        android:title="Contactar Soporte" />
+        android:title="@string/contactar_soporte" />
 
     <item
         android:id="@+id/cerrar_sesion"
-        android:contentDescription="Cerrar Sesión"
+        android:contentDescription="@string/cerrar_sesion"
         android:icon="@drawable/ic_log_out_24"
-        android:title="Cerrar Sesión" />
+        android:title="@string/cerrar_sesion" />
 
 </menu>

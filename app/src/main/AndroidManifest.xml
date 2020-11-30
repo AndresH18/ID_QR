@@ -14,6 +14,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.ID_QR.NoActionBar">
+        <activity android:name=".UserActivity"></activity>
         <activity
             android:name=".ui.Principal"
             android:screenOrientation="portrait" />
@@ -24,8 +25,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.LoginMain"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

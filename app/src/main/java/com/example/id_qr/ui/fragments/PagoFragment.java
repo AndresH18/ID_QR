@@ -1,8 +1,9 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -17,9 +18,12 @@ import com.example.id_qr.data_models.Pago;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +40,11 @@ public class PagoFragment extends Fragment {
 
     private static final String TIME = "time";
     private static final String DATE = "date";
+
+    private static final int VALOR_NORMAL = 4000;
+    private static final int VALOR_DIA = 6000;
+    private static final int VALOR_TRANSPORTE = 2000;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,25 +55,25 @@ public class PagoFragment extends Fragment {
     private String mParam2;
 
 
-    //    private FirebaseAuth mAuth;
-//    private FirebaseUser mUser;
-//    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private final DatabaseReference rootReference = database.getReference();
     private final DatabaseReference userReference;
     private final DatabaseReference parkingReference;
     private final DatabaseReference historialReference;
-//    private final DatabaseReference parkingReference = userReference.child("Parqueadero");
-//    private final DatabaseReference historialReference = parkingReference.child("Historial");
+    private final DatabaseReference saldoReference;
 
     {
         assert firebaseUser != null;
         userReference = rootReference.child("Pruebas").child("users").child(firebaseUser.getUid());
         parkingReference = userReference.child("Parqueadero");
         historialReference = parkingReference.child("Historial");
+        saldoReference = userReference.child("Saldo");
     }
 
+    private int saldo;
+    private int valorOp;
+    private Map<String, Integer> valueMap;
 
     private Button btn_PagoNormal;
     private Button btn_PagoDia;
@@ -105,6 +114,38 @@ public class PagoFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 //        DatabaseReference conditionReference = mRootRef.child("condition");
+        saldoReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "saldoReference");
+                String s = snapshot.getValue(String.class);
+                if (s != null && s.matches("[0-9]+")) {
+                    Log.d(TAG, "SaldoReference: Format Valid");
+//                    saldoString = snapshot.getValue(String.class);
+//                    saldoString = s;
+                    try {
+                        saldo = Integer.parseInt(s);
+                    }catch (NumberFormatException e){
+                        Log.e(TAG, "Failed to Convert \"Saldo\" to Integer", e.getCause());
+                    }
+                } else {
+                    Log.w(TAG, "SaldoReference: FORMAT WARNING");
+                    Log.w(TAG, "SaldoReference: Setting Value = \"0\"");
+                    saldoReference.setValue("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //TODO
+            }
+        });
+
+        valueMap = new HashMap<>();
+        valueMap.put("Normal", VALOR_NORMAL);
+        valueMap.put("Dia", VALOR_DIA);
+        valueMap.put("Transporte", VALOR_TRANSPORTE);
+
     }
 
     @Override
@@ -296,6 +337,7 @@ public class PagoFragment extends Fragment {
         data.put("Timestamp", ServerValue.TIMESTAMP);
 
         timeReference.setValue(data);
+
     }
 
 //    public void pagoNormal(View v){
@@ -312,11 +354,11 @@ public class PagoFragment extends Fragment {
     private void pagoEvent(View v, String tipoPago) {
         Log.d(TAG, "Pago " + tipoPago);
 
-        String p = tipoPago.equalsIgnoreCase("normal") ? "Parqueadero" : tipoPago;
+        String p = tipoPago.equalsIgnoreCase("Normal") ? "Parqueadero" : tipoPago;
 
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(v.getContext());
         dialogBuilder.setTitle("Pago " + p);
-        dialogBuilder.setMessage("¿Pagar " + p + "?");
+
         dialogBuilder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -324,7 +366,8 @@ public class PagoFragment extends Fragment {
             }
         });
         //TODO verificar Saldo
-        if (true) {
+        if (checkSaldoTransaction(tipoPago)) {
+            dialogBuilder.setMessage("¿Desea hacer el pago del " + p + "?");
             dialogBuilder.setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -332,7 +375,34 @@ public class PagoFragment extends Fragment {
                     storeEvent(tipoPago.toUpperCase());
                 }
             });
+        } else {
+            dialogBuilder.setMessage("Saldo insuficiente\nSaldo actual: " + saldo + "\nEl saldo Necesario: " + valueMap.get(tipoPago));
         }
         dialogBuilder.show();
+    }
+
+    private boolean checkSaldoTransaction(String tipoPago) {
+        switch (tipoPago.toUpperCase()) {
+            case "NORMAL":
+                valorOp = VALOR_NORMAL;
+                break;
+            case "DIA":
+                valorOp = VALOR_DIA;
+                break;
+            case "TRANSPORTE":
+                valorOp = VALOR_TRANSPORTE;
+                break;
+            default:
+                valorOp = 0;
+                break;
+        }
+        try {
+            if(saldo >= valorOp){
+                return true;
+            }
+        }catch (NumberFormatException e){
+            Log.e(TAG, "Failed to Convert Saldo to Integer", e.getCause());
+        }
+        return false;
     }
 }

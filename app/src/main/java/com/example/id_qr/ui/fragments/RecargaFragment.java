@@ -1,4 +1,4 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.fragments;
 
 import android.os.Bundle;
 
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.id_qr.R;
 

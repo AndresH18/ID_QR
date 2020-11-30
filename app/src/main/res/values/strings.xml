@@ -43,6 +43,10 @@
     <string name="valor_a_recargar">Valor a Recargar</string>
     <string name="metodo_de_pago">Metodo de Pago</string>
     <string name="buscar_en_guardados">Buscar en Guardados</string>
+    <string name="contactar_soporte">Contactar Soporte</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="user_account">Cuenta de Usuario</string>
+    <string name="user">Usuario</string>
     <string-array name="tipos_de_pago">
         <item>Credito</item>
         <item>Debito</item>

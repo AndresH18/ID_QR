@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".ui.PagoFragment">
+    tools:context=".ui.fragments.PagoFragment">
 
 
     <androidx.core.widget.NestedScrollView

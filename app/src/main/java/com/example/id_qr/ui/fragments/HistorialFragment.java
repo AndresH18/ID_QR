@@ -1,4 +1,4 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.fragments;
 
 import android.os.Bundle;
 
@@ -97,7 +97,7 @@ public class HistorialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_historial, container, false);
-        View view = inflater.inflate(R.layout.fragment_historial_refresh_scroll, container, false);
+        View view = inflater.inflate(R.layout.fragment_historial, container, false);
 
         listView = view.findViewById(android.R.id.list);
         adapter = new ArrayAdapter(view.getContext(), R.layout.list_items, history);

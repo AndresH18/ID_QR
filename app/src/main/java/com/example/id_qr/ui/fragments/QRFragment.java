@@ -1,4 +1,4 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

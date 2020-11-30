@@ -72,7 +72,7 @@ public class PagoFragment extends Fragment {
     }
 
     private int saldo;
-    private int valorOp;
+
     private Map<String, Integer> valueMap;
 
     private Button btn_PagoNormal;
@@ -125,7 +125,7 @@ public class PagoFragment extends Fragment {
 //                    saldoString = s;
                     try {
                         saldo = Integer.parseInt(s);
-                    }catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         Log.e(TAG, "Failed to Convert \"Saldo\" to Integer", e.getCause());
                     }
                 } else {
@@ -142,9 +142,9 @@ public class PagoFragment extends Fragment {
         });
 
         valueMap = new HashMap<>();
-        valueMap.put("Normal", VALOR_NORMAL);
-        valueMap.put("Dia", VALOR_DIA);
-        valueMap.put("Transporte", VALOR_TRANSPORTE);
+        valueMap.put("NORMAL", VALOR_NORMAL);
+        valueMap.put("DIA", VALOR_DIA);
+        valueMap.put("TRANSPORTE", VALOR_TRANSPORTE);
 
     }
 
@@ -328,15 +328,20 @@ public class PagoFragment extends Fragment {
     }
 
     private void storeEvent(String tipoEvento) {
-        Map<String, String> map = getDateTime();
-        final DatabaseReference dateReference = historialReference.child(map.get(DATE));
-        final DatabaseReference timeReference = dateReference.child(map.get(TIME));
+        Map<String, String> dateTimeMap = getDateTime();
+        final DatabaseReference dateReference = historialReference.child(dateTimeMap.get(DATE));
+        final DatabaseReference timeReference = dateReference.child(dateTimeMap.get(TIME));
 
+//        int newSaldo;
+//        if((newSaldo = saldo - valueMap.get(tipoEvento))<0) {
         Map<String, Object> data = new HashMap<>();
         data.put("Event", new Pago(tipoEvento));
         data.put("Timestamp", ServerValue.TIMESTAMP);
 
         timeReference.setValue(data);
+        int newSaldo = saldo - valueMap.get(tipoEvento);
+        Log.d(TAG, "new Saldo : " + newSaldo);
+        saldoReference.setValue(String.valueOf(newSaldo));
 
     }
 
@@ -367,7 +372,8 @@ public class PagoFragment extends Fragment {
         });
         //TODO verificar Saldo
         if (checkSaldoTransaction(tipoPago)) {
-            dialogBuilder.setMessage("¿Desea hacer el pago del " + p + "?");
+//            dialogBuilder.setMessage("¿Desea hacer el pago del " + p + "?" + "\nSaldo actual: " + saldo + "\n");
+            dialogBuilder.setMessage("Saldo actual: " + saldo + "\nValor de la Transaccion: " + valueMap.get(tipoPago.toUpperCase()) + "\nSaldo Restante: " + (saldo - valueMap.get(tipoPago.toUpperCase())));
             dialogBuilder.setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -376,31 +382,32 @@ public class PagoFragment extends Fragment {
                 }
             });
         } else {
-            dialogBuilder.setMessage("Saldo insuficiente\nSaldo actual: " + saldo + "\nEl saldo Necesario: " + valueMap.get(tipoPago));
+            dialogBuilder.setMessage("Saldo insuficiente\nSaldo actual: " + saldo + "\nEl saldo Necesario: " + valueMap.get(tipoPago.toUpperCase()));
         }
         dialogBuilder.show();
     }
 
     private boolean checkSaldoTransaction(String tipoPago) {
+        int valorOperacion;
         switch (tipoPago.toUpperCase()) {
             case "NORMAL":
-                valorOp = VALOR_NORMAL;
+                valorOperacion = VALOR_NORMAL;
                 break;
             case "DIA":
-                valorOp = VALOR_DIA;
+                valorOperacion = VALOR_DIA;
                 break;
             case "TRANSPORTE":
-                valorOp = VALOR_TRANSPORTE;
+                valorOperacion = VALOR_TRANSPORTE;
                 break;
             default:
-                valorOp = 0;
+                valorOperacion = 0;
                 break;
         }
         try {
-            if(saldo >= valorOp){
+            if (saldo >= valorOperacion) {
                 return true;
             }
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Log.e(TAG, "Failed to Convert Saldo to Integer", e.getCause());
         }
         return false;

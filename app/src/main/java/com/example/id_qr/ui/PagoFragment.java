@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ import java.util.Map;
 public class PagoFragment extends Fragment {
     private static final String TAG = "PagoFragment";
 
+    private static final String TIME = "time";
+    private static final String DATE = "date";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,9 +52,18 @@ public class PagoFragment extends Fragment {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private final DatabaseReference rootReference = database.getReference();
-    private final DatabaseReference userReference = rootReference.child("Pruebas").child("users").child(firebaseUser.getUid());
-    private final DatabaseReference parkingReference = userReference.child("Parqueadero");
-    private final DatabaseReference historialReference = parkingReference.child("Historial");
+    private final DatabaseReference userReference;
+    private final DatabaseReference parkingReference;
+    private final DatabaseReference historialReference;
+//    private final DatabaseReference parkingReference = userReference.child("Parqueadero");
+//    private final DatabaseReference historialReference = parkingReference.child("Historial");
+
+    {
+        assert firebaseUser != null;
+        userReference = rootReference.child("Pruebas").child("users").child(firebaseUser.getUid());
+        parkingReference = userReference.child("Parqueadero");
+        historialReference = parkingReference.child("Historial");
+    }
 
 
     private Button btn_PagoNormal;
@@ -101,14 +113,13 @@ public class PagoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_pago, container, false);
 
-        Log.d(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
+//        Log.d(TAG, "ATTEMPTING TO ASSIGN R.id.btn_pago_dia_normal");
         btn_PagoNormal = (Button) view.findViewById(R.id.btn_pago_dia_normal);
-        if (btn_PagoNormal == null) {
-            Log.e(TAG, "FAILED TO ASSIGN R.id.btn_pago_dia_normal");
-        } else {
-            Log.d(TAG, "R.id.btn_pago_dia_normal Assigned");
-        }
-
+//        if (btn_PagoNormal == null) {
+//            Log.e(TAG, "FAILED TO ASSIGN R.id.btn_pago_dia_normal");
+//        } else {
+//            Log.d(TAG, "R.id.btn_pago_dia_normal Assigned");
+//        }
         btn_PagoDia = (Button) view.findViewById(R.id.btn_pago_dia_completo);
         btn_PagoTransporte = (Button) view.findViewById(R.id.btn_pago_transporte_eia);
 
@@ -117,7 +128,6 @@ public class PagoFragment extends Fragment {
         ib_pagoTransporte = (ImageButton) view.findViewById(R.id.ib_pago_transporte);
 
         startActions();
-
 
         //
 //        mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -130,137 +140,77 @@ public class PagoFragment extends Fragment {
     }
 
 
-    private void pagoNormal() {
-        Log.d(TAG, "pago Normal");
-        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Normal")
-                .setMessage("¿Pagar Parqueadero?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Normal: \"CANCEL\"");
-            }
-        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Normal: \"ACCEPT\"");
-                //TODO
-            }
-        });
-
-        LocalDateTime dateTime = LocalDateTime.now();
-//        String year = String.valueOf(dateTime.getYear());
-//        String month = String.valueOf(dateTime.getMonthValue());
-//        String day = String.valueOf(dateTime.getDayOfMonth());
-//        String hour = String.valueOf(dateTime.getHour());
-//        String minute = String.valueOf(dateTime.getMinute());
-//        String second = String.valueOf(dateTime.getSecond());
-//
-//        int date = Integer.parseInt(year.concat(month).concat(day));
-//        int time = Integer.parseInt(hour.concat(minute).concat(second));
-//
-//
-//        final DatabaseReference dateReference = historialReference.child(year.concat(month).concat(day));
-//        final DatabaseReference timeReference = dateReference.child(hour.concat(minute).concat(second));
-
-        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
-        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
-        Log.d(TAG, String.valueOf(date));
-        Log.d(TAG, String.valueOf(time));
-
-        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
-        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("Event", new Pago("Normal"));
-        data.put("Timestamp", ServerValue.TIMESTAMP);
-
-        timeReference.setValue(data);
-
-
-
-//        if (mUser != null) {
-//            // Agregar a fecha
-//            // [fecha hoy] :
-//        }
-    }
-
-    private void pagoDia() {
-        Log.d(TAG, "pago Dia");
-
-        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Dia")
-                .setMessage("¿Pagar Dia?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Dia: \"CANCEL\"");
-            }
-        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Dia: \"ACCEPT\"");
-                //TODO
-            }
-        });
-
-//        userReference.child("3").setValue("ANNDREs").addOnCompleteListener(new OnCompleteListener<Void>() {
+//    private void pagoNormal(View v) {
+//        Log.d(TAG, "pago Normal");
+//        new MaterialAlertDialogBuilder(v.getContext()).setTitle("Pago Normal")
+//                .setMessage("¿Pagar Parqueadero?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
 //            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                Log.e(TAG, "COMPLETE");
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Normal: \"CANCEL\"");
+//            }
+//        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Normal: \"ACCEPT\"");
+//                storeEvent("NORMAL");
 //            }
 //        });
-//        userReference.child("3").setValue(new User("Pato", "Hoyos", 27), new DatabaseReference.CompletionListener() {
+////        if (mUser != null) {
+////            // Agregar a fecha
+////            // [fecha hoy] :
+////        }
+//    }
+//
+//    private void pagoDia(View v) {
+//        Log.d(TAG, "pago Dia");
+//
+//        new MaterialAlertDialogBuilder(v.getContext()).setTitle("Pago Dia")
+//                .setMessage("¿Pagar Dia?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
 //            @Override
-//            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Dia: \"CANCEL\"");
+//            }
+//        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Dia: \"ACCEPT\"");
+//                storeEvent("DIA");
 //
 //            }
 //        });
-        LocalDateTime dateTime = LocalDateTime.now();
-        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
-        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
-        Log.d(TAG, String.valueOf(date));
-        Log.d(TAG, String.valueOf(time));
-
-        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
-        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("Event", new Pago("Dia"));
-        data.put("Timestamp", ServerValue.TIMESTAMP);
-
-        timeReference.setValue(data);
-
-    }
-
-    private void pagoTransporte() {
-        Log.d(TAG, "pago Transporte");
-
-        new MaterialAlertDialogBuilder(getContext()).setTitle("Pago Transporte")
-                .setMessage("¿Pagar Transporte?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Transporte: \"Cancel\"");
-            }
-        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Pago Transporte: \"Accept\"");
-                //TODO
-            }
-        });
-
-        LocalDateTime dateTime = LocalDateTime.now();
-        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
-        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
-        Log.d(TAG, String.valueOf(date));
-        Log.d(TAG, String.valueOf(time));
-
-        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
-        final DatabaseReference timeReference = dateReference.child(String.valueOf(time));
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("Event", new Pago("Transporte"));
-        data.put("Timestamp", ServerValue.TIMESTAMP);
-
-        timeReference.setValue(data);
-    }
+//
+////        userReference.child("3").setValue("ANNDREs").addOnCompleteListener(new OnCompleteListener<Void>() {
+////            @Override
+////            public void onComplete(@NonNull Task<Void> task) {
+////                Log.e(TAG, "COMPLETE");
+////            }
+////        });
+////        userReference.child("3").setValue(new User("Pato", "Hoyos", 27), new DatabaseReference.CompletionListener() {
+////            @Override
+////            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+////
+////            }
+////        });
+//    }
+//
+//    private void pagoTransporte(View v) {
+//        Log.d(TAG, "pago Transporte");
+//
+//        new MaterialAlertDialogBuilder(v.getContext()).setTitle("Pago Transporte")
+//                .setMessage("¿Pagar Transporte?").setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Transporte: \"Cancel\"");
+//            }
+//        }).setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "Pago Transporte: \"Accept\"");
+//                storeEvent("Transporte");
+//
+//            }
+//        });
+//    }
 
 
     private void startActions() {
@@ -268,44 +218,84 @@ public class PagoFragment extends Fragment {
         btn_PagoNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoNormal();
+//                pagoNormal(v);
+                pagoEvent(v, "Normal");
             }
         });
 
         ib_pagoNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoNormal();
+//                pagoNormal(v);
+                pagoEvent(v, "Normal");
+
             }
         });
 
         btn_PagoDia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoDia();
+//                pagoDia(v);
+                pagoEvent(v, "Dia");
+
             }
         });
 
         ib_pagoDia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoDia();
+//                pagoDia(v);
+                pagoEvent(v, "Dia");
             }
         });
 
         btn_PagoTransporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoTransporte();
+//                pagoTransporte(v);
+                pagoEvent(v, "Transporte");
             }
         });
 
         ib_pagoTransporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pagoTransporte();
+//                pagoTransporte(v);
+                pagoEvent(v, "Transporte");
+
             }
         });
+    }
+
+    private Map<String, String> getDateTime() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HHmmss");
+
+        String date = dateTime.format(dateFormat);
+        String time = dateTime.format(timeFormat);
+
+        Log.d(TAG, "getDateTime: date: " + date);
+        Log.d(TAG, "getDateTime: time: " + time);
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put(DATE, date);
+        map.put(TIME, time);
+
+        return map;
+    }
+
+    private void storeEvent(String tipoEvento) {
+        Map<String, String> map = getDateTime();
+        final DatabaseReference dateReference = historialReference.child(map.get(DATE));
+        final DatabaseReference timeReference = dateReference.child(map.get(TIME));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Event", new Pago(tipoEvento));
+        data.put("Timestamp", ServerValue.TIMESTAMP);
+
+        timeReference.setValue(data);
     }
 
 //    public void pagoNormal(View v){
@@ -319,4 +309,30 @@ public class PagoFragment extends Fragment {
 //
 //    }
 
+    private void pagoEvent(View v, String tipoPago) {
+        Log.d(TAG, "Pago " + tipoPago);
+
+        String p = tipoPago.equalsIgnoreCase("normal") ? "Parqueadero" : tipoPago;
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(v.getContext());
+        dialogBuilder.setTitle("Pago " + p);
+        dialogBuilder.setMessage("¿Pagar " + p + "?");
+        dialogBuilder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "pago " + tipoPago + ": \"CANCEL\"");
+            }
+        });
+        //TODO verificar Saldo
+        if (true) {
+            dialogBuilder.setPositiveButton("Pagar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "pago " + tipoPago + ": \"ACCEPT\"");
+                    storeEvent(tipoPago.toUpperCase());
+                }
+            });
+        }
+        dialogBuilder.show();
+    }
 }

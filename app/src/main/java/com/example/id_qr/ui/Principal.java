@@ -167,7 +167,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 //        }
 
 
-        /**
+        /*
          * Bottom Navigation Behavior
          */
 //        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -239,7 +239,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d(TAG, "Item Menu : Cerrar Sesion : DialogInterface : PositiveOption," + which);
-                                //TODO: Cerrar Sesion
+
                                 cerrarSesion();
                             }
                         }).show();
@@ -284,6 +284,7 @@ public class Principal extends AppCompatActivity implements LoaderManager.Loader
 
     private void cerrarSesion() {
         user = mAuth.getCurrentUser();
+        assert user != null;
         String email = user.getEmail();
 //        Log.e(TAG, user.getEmail());
 //        FirebaseAuth.getInstance().signOut();

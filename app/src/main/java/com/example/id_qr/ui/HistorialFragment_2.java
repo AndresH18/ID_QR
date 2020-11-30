@@ -1,9 +1,11 @@
 package com.example.id_qr.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -134,6 +136,28 @@ public class HistorialFragment_2 extends Fragment {
                 d.setValue("hola");
             }
         });
+//        listView = view.findViewById(R.id.list_view_historial);
+//        adapter = new ArrayAdapter(view.getContext(), R.layout.list_items, history);
+//        listView.setAdapter(adapter);
+//
+//        optionRef = rootRef.child("option");
+//        optionRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.e(TAG,"VALUE CHANGED");
+//                history.clear();
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    history.add(dataSnapshot.getValue().toString());
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e(TAG, "VALUE CHANGE CANCELLED ERROR");
+//            }
+//        });
+
 
 
         return view;

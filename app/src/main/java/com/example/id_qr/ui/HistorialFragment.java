@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,22 +21,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-///HOLA
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistorialFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+///**
+// * A simple {@link Fragment} subclass.
+// * Use the {@link HistorialFragment#newInstance} factory method to
+// * create an instance of this fragment.
+// */
 public class HistorialFragment extends Fragment {
     private static final String TAG = "HistorialFragment";
 
@@ -52,35 +48,38 @@ public class HistorialFragment extends Fragment {
     private TextView textView;
 
 
-    private final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference optionRef;
-    private List<String> history = new ArrayList<>();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private final DatabaseReference rootReference = database.getReference();
+    private final DatabaseReference userReference = rootReference.child("Pruebas").child("users").child(firebaseUser.getUid());
+    private final DatabaseReference parkingReference = userReference.child("Parqueadero");
+    private final DatabaseReference historialReference = parkingReference.child("Historial");
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
+    private final List<String> history = new ArrayList<>();
 
 
     public HistorialFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistorialFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistorialFragment newInstance(String param1, String param2) {
-        HistorialFragment fragment = new HistorialFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    /**
+//     * Use this factory method to create a new instance of
+//     * this fragment using the provided parameters.
+//     *
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
+//     * @return A new instance of fragment HistorialFragment.
+//     */
+//    public static HistorialFragment newInstance(String param1, String param2) {
+//        HistorialFragment fragment = new HistorialFragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +89,7 @@ public class HistorialFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     @Override
@@ -97,29 +97,48 @@ public class HistorialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_historial, container, false);
-        View view = inflater.inflate(R.layout.fragment_historial, container, false);
+        View view = inflater.inflate(R.layout.fragment_historial_refresh_scroll, container, false);
 
-        listView = view.findViewById(R.id.list_view_historial);
+        listView = view.findViewById(android.R.id.list);
         adapter = new ArrayAdapter(view.getContext(), R.layout.list_items, history);
         listView.setAdapter(adapter);
 
-        optionRef = rootRef.child("option");
-        optionRef.addValueEventListener(new ValueEventListener() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        final int date = (dateTime.getYear() * 10000) + (dateTime.getMonthValue() * 100) + (dateTime.getDayOfMonth());
+//        final int time = (dateTime.getHour() * 10000) + (dateTime.getMinute() * 100) + (dateTime.getSecond());
+        Log.d(TAG, String.valueOf(date));
+//        Log.d(TAG, String.valueOf(time));
+        final DatabaseReference dateReference = historialReference.child(String.valueOf(date));
+
+        dateReference.orderByChild("Timestamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e(TAG,"VALUE CHANGED");
+                Log.e(TAG, "DATACHANGED");
+                Toast.makeText(getActivity(), "Updating", Toast.LENGTH_SHORT).show();
                 history.clear();
+
+                //TODO FIXME Create a "for" loop that start from "".length""{ snapshot.getChildrenCount() } to "0"
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    history.add(dataSnapshot.getValue().toString());
+                    String time = dataSnapshot.getKey();
+                    Object eventoObject = dataSnapshot.child("Event").child("tipo").getValue();
+                    String evento = "Evento Vacio";
+                    if(time == null){
+                        time = "Tiempo Vacio";
+                    }
+                    if(eventoObject != null){
+                        evento = eventoObject.toString();
+                    }
+                    history.add(time.concat("\t").concat(evento));
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "VALUE CHANGE CANCELLED ERROR");
+
             }
         });
+
 
         return view;
     }

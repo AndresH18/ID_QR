@@ -35,11 +35,11 @@
                 android:layout_marginTop="32dp"
                 android:adjustViewBounds="true"
                 android:clickable="false"
+                android:contentDescription="@string/logo_u"
                 android:focusable="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/logo_eia"
-                android:contentDescription="@string/logo_u" />
+                app:srcCompat="@drawable/logo_eia" />
 
             <ImageView
                 android:id="@+id/logo_idqr_layout_login"
@@ -86,10 +86,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="98dp"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
                 android:hint="@string/input_correo_txt"
                 app:boxBackgroundColor="@color/background"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout_password_field"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout_password_field"

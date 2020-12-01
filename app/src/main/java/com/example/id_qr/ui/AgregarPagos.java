@@ -22,6 +22,7 @@ public class AgregarPagos extends AppCompatActivity {
     private int numberCount = 0;
     private int dateCount = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

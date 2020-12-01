@@ -21,13 +21,14 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="48dp"
             android:text="Agregar Método de Pago"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            tools:layout_editor_absoluteX="46dp"
-            tools:layout_editor_absoluteY="48dp"
 
-            />
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_dropdown_bancos"
@@ -107,6 +108,7 @@
                 android:imeOptions="actionNext"
                 android:maxLength="5"
                 android:inputType="number" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

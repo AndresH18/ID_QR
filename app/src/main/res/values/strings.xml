@@ -47,11 +47,25 @@
     <string name="ayuda">Ayuda</string>
     <string name="user_account">Cuenta de Usuario</string>
     <string name="user">Usuario</string>
-    <string-array name="tipos_de_pago">
+    <string-array name="opciones_de_pago">
         <item>Credito</item>
         <item>Debito</item>
-        <item>Pse</item>
-        <item>Tesoreria</item>
+        <item>Mastercard</item>
+        <item>Amex</item>
+        <item>otro</item>
+    </string-array>
+    <string-array name="bancos">
+        <item>Banco Agrario de Colombia</item>
+        <item>Banco AV Villas</item>
+        <item>Banco Caja Social</item>
+        <item>Banco de Occidente</item>
+        <item>Banco Popular</item>
+        <item>Bancolombia</item>
+        <item>BBVA</item>
+        <item>Banco de Bogotá</item>
+        <item>Colpatria</item>
+        <item>Davivienda</item>
+
     </string-array>
 
 </resources>

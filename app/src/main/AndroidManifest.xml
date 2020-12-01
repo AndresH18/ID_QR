@@ -14,7 +14,11 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.ID_QR.NoActionBar">
-        <activity android:name=".UserActivity"></activity>
+        <activity
+            android:name=".ui.AgregarPagos"
+            android:screenOrientation="portrait"
+            android:noHistory="true"/>
+        <activity android:name=".UserActivity" />
         <activity
             android:name=".ui.Principal"
             android:screenOrientation="portrait" />

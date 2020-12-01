@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".ui.AgregarPagos">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/background_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-49dp">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar Método de Pago"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="46dp"
+            tools:layout_editor_absoluteY="48dp"
+
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_dropdown_bancos"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
+            app:boxBackgroundColor="@color/background"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <AutoCompleteTextView
+                android:id="@+id/dropdown_bancos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Banco"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_numero_tarjeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxBackgroundColor="@color/background"
+            app:counterEnabled="true"
+            app:counterMaxLength="19"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_dropdown_bancos"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_dropdown_bancos">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/numero_tarjeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Numero Tarjeta"
+                android:imeOptions="actionNext"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_nombre_titular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxBackgroundColor="@color/background"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout_numero_tarjeta"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_numero_tarjeta"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_numero_tarjeta">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nombre_titular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre del Titular"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_fecha_expiracion"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxBackgroundColor="@color/background"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_nombre_titular"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_nombre_titular">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fecha_expiracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de Expiración"
+                android:imeOptions="actionNext"
+                android:maxLength="5"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_codigo_tarjeta"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxBackgroundColor="@color/background"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_fecha_expiracion"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_fecha_expiracion">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/codigo_tarjeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="CCV"
+                android:maxLength="3"
+                android:imeOptions="actionDone"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

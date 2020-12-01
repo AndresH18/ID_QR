@@ -282,6 +282,8 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void log_in(String user, String pass, Context context) {
+        btn_login.setClickable(false);
+        btn_recuperarPassword.setClickable(false);
 //        ConnectivityManager connMgr = (ConnectivityManager)
 //                getSystemService(Context.CONNECTIVITY_SERVICE);
 //
@@ -314,6 +316,8 @@ public class LoginMain extends AppCompatActivity {
                         // If log_in in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show();
+                        btn_login.setClickable(true);
+                        btn_recuperarPassword.setClickable(true);
                     }
 
                 }
@@ -325,9 +329,13 @@ public class LoginMain extends AppCompatActivity {
             if (pass.isEmpty()) {
 
             }
+            btn_login.setClickable(true);
+            btn_recuperarPassword.setClickable(true);
         } else {
             Log.w(TAG, "NO INTERNET CONECTION");
             Toast.makeText(context, "No se detecto Conexi" + (char) 243 + "n", Toast.LENGTH_LONG).show();
+            btn_login.setClickable(true);
+            btn_recuperarPassword.setClickable(true);
 
         }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,6 +13,9 @@
         android:id="@+id/background_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-49dp">
 
@@ -25,7 +28,6 @@
             android:layout_marginTop="48dp"
             android:text="Agregar Método de Pago"
             android:textColor="@color/black"
-
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +40,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="100dp"
             app:boxBackgroundColor="@color/background"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="@+id/textView"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -58,6 +61,8 @@
             app:boxBackgroundColor="@color/background"
             app:counterEnabled="true"
             app:counterMaxLength="19"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="@+id/textView"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_dropdown_bancos"
@@ -69,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Numero Tarjeta"
                 android:imeOptions="actionNext"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="19" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,6 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:boxBackgroundColor="@color/background"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="@+id/textInputLayout_numero_tarjeta"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_numero_tarjeta"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout_numero_tarjeta">
@@ -97,6 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:boxBackgroundColor="@color/background"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_nombre_titular"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout_nombre_titular">
 
@@ -106,17 +116,21 @@
                 android:layout_height="wrap_content"
                 android:hint="Fecha de Expiración"
                 android:imeOptions="actionNext"
-                android:maxLength="5"
-                android:inputType="number" />
-
+                android:inputType="number"
+                android:maxLength="5" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_codigo_tarjeta"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:boxBackgroundColor="@color/background"
+            app:counterEnabled="true"
+            app:counterMaxLength="3"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout_fecha_expiracion"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_fecha_expiracion"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout_fecha_expiracion">
 
@@ -125,11 +139,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="CCV"
-                android:maxLength="3"
                 android:imeOptions="actionDone"
-                android:inputType="number" />
+                android:inputType="numberPassword"
+                android:maxLength="3" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/agregar_metodo_pago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:onClick="agregar"
+            android:text="Agregar"
+            app:layout_constraintBottom_toBottomOf="@+id/cancelar"
+            app:layout_constraintStart_toEndOf="@+id/cancelar" />
+
+        <Button
+            android:id="@+id/cancelar"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:onClick="cancelar"
+            android:text="Cancelar"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_codigo_tarjeta"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_codigo_tarjeta" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

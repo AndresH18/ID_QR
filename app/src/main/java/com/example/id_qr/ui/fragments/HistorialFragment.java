@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -55,6 +57,7 @@ public class HistorialFragment extends Fragment {
     private final DatabaseReference parkingReference = userReference.child("Parqueadero");
     private final DatabaseReference historialReference = parkingReference.child("Historial");
 
+    private SwipeRefreshLayout refreshLayout;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private final List<String> history = new ArrayList<>();
@@ -99,6 +102,14 @@ public class HistorialFragment extends Fragment {
 //        return inflater.inflate(R.layout.fragment_historial, container, false);
         View view = inflater.inflate(R.layout.fragment_historial, container, false);
 
+        refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d(TAG, "onRefresh() called from SwipeRefreshlayout");
+                refreshLayout.setRefreshing(false);
+            }
+        });
         listView = view.findViewById(android.R.id.list);
         adapter = new ArrayAdapter(view.getContext(), R.layout.list_items, history);
         listView.setAdapter(adapter);
@@ -117,7 +128,6 @@ public class HistorialFragment extends Fragment {
                 Toast.makeText(getActivity(), "Updating", Toast.LENGTH_SHORT).show();
                 history.clear();
 
-                //TODO FIXME Create a "for" loop that start from "".length""{ snapshot.getChildrenCount() } to "0"
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String time = dataSnapshot.getKey();
                     Object eventoObject = dataSnapshot.child("Event").child("tipo").getValue();
@@ -130,6 +140,7 @@ public class HistorialFragment extends Fragment {
                     }
                     history.add(time.concat("\t").concat(evento));
                 }
+                Collections.reverse(history);
                 adapter.notifyDataSetChanged();
             }
 

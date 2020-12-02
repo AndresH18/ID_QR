@@ -157,7 +157,7 @@ public class RecargaFragment extends Fragment {
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             Log.d(TAG, "Saldo Changed");
             String saldo = snapshot.getValue(String.class);
-            saldoActual.setText(getString(R.string.saldo_actual_txt).concat(saldo).concat("  COP"));
+            saldoActual.setText("Saldo Actual: $".concat(saldo).concat("  COP"));
             saldoIntActual = Integer.parseInt(saldo);
         }
 

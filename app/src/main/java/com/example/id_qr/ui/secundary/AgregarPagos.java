@@ -277,7 +277,7 @@ public class AgregarPagos extends AppCompatActivity {
         Log.d(TAG, "Sending Pago");
         Map<String, Object> data = new HashMap<>();
         String key = cardNumber.getText().toString().substring(15, 19);
-        Log.e(TAG, "KEY" + key);
+        Log.d(TAG, "KEY" + key);
 //        String key = cardNumber.getText().toString().substring(16, cardNumber.getText().toString().length());
         String banco = spinnerBancos.getText().toString();
         String numero = cardNumber.getText().toString();

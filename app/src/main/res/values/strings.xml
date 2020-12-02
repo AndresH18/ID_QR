@@ -43,11 +43,46 @@
     <string name="valor_a_recargar">Valor a Recargar</string>
     <string name="metodo_de_pago">Metodo de Pago</string>
     <string name="buscar_en_guardados">Buscar en Guardados</string>
-    <string-array name="tipos_de_pago">
+    <string name="contactar_soporte">Contactar Soporte</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="user_account">Cuenta de Usuario</string>
+    <string name="user">Usuario</string>
+    <string name="saldo_actual_txt">Saldo Actual: $</string>
+    <string name="agregar_metodo_pago">Agregar Metodo de Pago</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="ok">OK</string>
+    <string name="agregar_pago_txt">Agregar Pago</string>
+
+    <string-array name="opciones_de_pago">
         <item>Credito</item>
         <item>Debito</item>
-        <item>Pse</item>
-        <item>Tesoreria</item>
+        <item>Mastercard</item>
+        <item>Amex</item>
+        <item>otro</item>
+    </string-array>
+    <string-array name="bancos">
+        <item>AV Villas</item>
+        <item>Caja Social</item>
+        <item>Banco de Occidente</item>
+        <item>Banco Popular</item>
+        <item>Bancolombia</item>
+        <item>BBVA</item>
+        <item>Banco de Bogotá</item>
+        <item>Colpatria</item>
+        <item>Davivienda</item>
+
+    </string-array>
+    <string-array name="bancos2">
+        <item>Banco AV Villas</item>
+        <item>Banco Caja Social</item>
+        <item>Banco de Occidente</item>
+        <item>Banco Popular</item>
+        <item>Bancolombia</item>
+        <item>BBVA</item>
+        <item>Banco de Bogotá</item>
+        <item>Colpatria</item>
+        <item>Davivienda</item>
+
     </string-array>
 
 </resources>

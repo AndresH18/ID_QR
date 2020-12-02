@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/fragmentQR"
-        android:name="com.example.id_qr.ui.QRFragment"
+        android:name="com.example.id_qr.ui.fragments.QRFragment"
         android:label="fragment_q_r"
         tools:layout="@layout/fragment_qr" />
 
     <fragment
         android:id="@+id/fragmentPago"
-        android:name="com.example.id_qr.ui.PagoFragment"
+        android:name="com.example.id_qr.ui.fragments.PagoFragment"
         android:label="fragment_pago"
         tools:layout="@layout/fragment_pago" />
 
     <fragment
         android:id="@+id/fragmentRecarga"
-        android:name="com.example.id_qr.ui.RecargaFragment"
+        android:name="com.example.id_qr.ui.fragments.RecargaFragment"
         android:label="fragment_recarga"
         tools:layout="@layout/fragment_recarga" />
 
     <fragment
         android:id="@+id/fragmentHistorial"
-        android:name="com.example.id_qr.ui.HistorialFragment"
+        android:name="com.example.id_qr.ui.fragments.HistorialFragment"
         android:label="fragment_historial"
         tools:layout="@layout/fragment_historial" />
 </navigation>

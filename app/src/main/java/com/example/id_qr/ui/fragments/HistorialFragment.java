@@ -125,7 +125,6 @@ public class HistorialFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.e(TAG, "DATACHANGED");
-                Toast.makeText(getActivity(), "Updating", Toast.LENGTH_SHORT).show();
                 history.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -134,11 +133,14 @@ public class HistorialFragment extends Fragment {
                     String evento = "Evento Vacio";
                     if(time == null){
                         time = "Tiempo Vacio";
+                    }else{
+                        String ss = time;
+                        time = ss.substring(0,2).concat(":").concat(ss.substring(2,4));
                     }
                     if(eventoObject != null){
                         evento = eventoObject.toString();
                     }
-                    history.add(time.concat("\t").concat(evento));
+                    history.add(time.concat("\t\t").concat(evento));
                 }
                 Collections.reverse(history);
                 adapter.notifyDataSetChanged();

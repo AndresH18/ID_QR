@@ -1,4 +1,4 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.primary;
 
 import android.content.DialogInterface;
 import android.content.Intent;

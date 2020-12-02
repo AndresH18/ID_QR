@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.id_qr.R;
 import com.example.id_qr.data_models.Pago;
@@ -137,7 +139,7 @@ public class PagoFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //TODO
+                Log.w(TAG, "saldoReference, oncCancelled");
             }
         });
 
@@ -327,7 +329,7 @@ public class PagoFragment extends Fragment {
         return map;
     }
 
-    private void storeEvent(String tipoEvento) {
+    private void storeEvent(View v, String tipoEvento) {
         Map<String, String> dateTimeMap = getDateTime();
         final DatabaseReference dateReference = historialReference.child(dateTimeMap.get(DATE));
         final DatabaseReference timeReference = dateReference.child(dateTimeMap.get(TIME));
@@ -341,7 +343,19 @@ public class PagoFragment extends Fragment {
         timeReference.setValue(data);
         int newSaldo = saldo - valueMap.get(tipoEvento);
         Log.d(TAG, "new Saldo : " + newSaldo);
-        saldoReference.setValue(String.valueOf(newSaldo));
+        saldoReference.setValue(String.valueOf(newSaldo), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error == null) {
+                    Log.d(TAG, "SaldoReference: Update SUCCESFUL");
+                    Toast.makeText(v.getContext(), "Pago Completado", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.w(TAG, "SaldoReference: Update FAILED");
+                    Toast.makeText(v.getContext(), "Error", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
 
     }
 
@@ -378,7 +392,7 @@ public class PagoFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Log.d(TAG, "pago " + tipoPago + ": \"ACCEPT\"");
-                    storeEvent(tipoPago.toUpperCase());
+                    storeEvent(v, tipoPago.toUpperCase());
                 }
             });
         } else {

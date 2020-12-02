@@ -4,14 +4,16 @@ public class Recarga {
 
     private String valor;
     private String metodo;
+    private String tipo;
 
     public Recarga() {
         //Required public Constructor
     }
 
-    public Recarga(String valor, String metodo) {
+    public Recarga(String valor, String metodo, String tipo) {
         this.valor = valor;
         this.metodo = metodo;
+        this.tipo = tipo;
     }
 
     public String getMetodo() {
@@ -28,5 +30,13 @@ public class Recarga {
 
     public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

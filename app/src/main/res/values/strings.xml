@@ -47,7 +47,12 @@
     <string name="ayuda">Ayuda</string>
     <string name="user_account">Cuenta de Usuario</string>
     <string name="user">Usuario</string>
-    <string name="saldo_actual_txt">Saldo Actual: </string>
+    <string name="saldo_actual_txt">Saldo Actual: $</string>
+    <string name="agregar_metodo_pago">Agregar Metodo de Pago</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="ok">OK</string>
+    <string name="agregar_pago_txt">Agregar Pago</string>
+
     <string-array name="opciones_de_pago">
         <item>Credito</item>
         <item>Debito</item>

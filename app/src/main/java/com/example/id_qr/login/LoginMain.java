@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 
 import com.example.id_qr.R;
-import com.example.id_qr.ui.Principal;
+import com.example.id_qr.ui.primary.Principal;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginMain extends AppCompatActivity {
-    private static final String TAG = "LoginMain";
+    private static final String TAG = LoginMain.class.getSimpleName();
 
     private static final String USER_EMAIL = "USER_EMAIL";
 
@@ -70,12 +70,20 @@ public class LoginMain extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Log.d(TAG, "Current user === existes");
-            FirebaseAuth.getInstance().signOut();
-            Log.d(TAG, "Current user: logout");
-        } else {
-            Log.d(TAG, "Current user === null");
+//        if (currentUser != null) {
+//            Log.d(TAG, "Current user === existes");
+//            FirebaseAuth.getInstance().signOut();
+//            Log.d(TAG, "Current user: logout");
+//        } else {
+//            Log.d(TAG, "Current user === null");
+//        }
+        if(currentUser != null){
+            Log.w(TAG,"User is logged in");
+            Toast t = Toast.makeText(getApplicationContext(), "Login in...", Toast.LENGTH_SHORT);
+            t.show();
+            Intent i = new Intent(LoginMain.this,Principal.class);
+            startActivity(i);
+            finish();
         }
 
     }

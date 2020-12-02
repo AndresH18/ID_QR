@@ -15,12 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ID_QR.NoActionBar">
         <activity
-            android:name=".ui.AgregarPagos"
+            android:name=".ui.secundary.AgregarPagos"
             android:screenOrientation="portrait"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:parentActivityName=".ui.primary.Principal">
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".ui.Principal"/>-->
+        </activity>
         <activity android:name=".UserActivity" />
         <activity
-            android:name=".ui.Principal"
+            android:name=".ui.primary.Principal"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.RecoverPassword"

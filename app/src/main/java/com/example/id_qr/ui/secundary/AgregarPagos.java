@@ -1,6 +1,7 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.secundary;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,21 +14,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.id_qr.R;
 import com.example.id_qr.data_models.MedioDePago;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,11 +47,13 @@ public class AgregarPagos extends AppCompatActivity {
     private ConstraintLayout backgroundLayout;
     private TextInputLayout spinnerBancosLayout, cardNumberInputLayout, nombreTitularInputLayout, expirationDateInputLayout, cardCodeInputLayout;
 
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+
     private ArrayAdapter<CharSequence> arrayAdapter;
 
     private int numberCount = 0;
     private int dateCount = 0;
-    private String nodesCounter = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,12 @@ public class AgregarPagos extends AppCompatActivity {
         nombreTitularInputLayout = findViewById(R.id.textInputLayout_nombre_titular);
         expirationDateInputLayout = findViewById(R.id.textInputLayout_fecha_expiracion);
         cardCodeInputLayout = findViewById(R.id.textInputLayout_codigo_tarjeta);
+
+        toolbar = (Toolbar) findViewById(R.id.topAppBar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         spinnerBancos.setOnDismissListener(dismissListener);
 
@@ -175,15 +184,30 @@ public class AgregarPagos extends AppCompatActivity {
 
     public void agregar(View v) {
         if (check()) {
-            //TODO Send to database
-            sendPago(v);
+            new MaterialAlertDialogBuilder(v.getContext())
+            .setTitle(getString(R.string.confirmar))
+            .setMessage(getString(R.string.agregar_metodo_pago))
+            .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "AgregarMetodo, Dialogbuilde, CANCELAR");
+                    //EMPTY
+                }
+            }).setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "AgregarMetodo, Dialogbuilde, PositiveOption");
+                    sendPago(v);
+                }
+            }).show();
+
         } else {
             Toast.makeText(v.getContext(), "Revise los Campos", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void cancelar(View v) {
-        //TODO go to previous Activity
+        finish();
     }
 
     private boolean check() {
@@ -250,6 +274,7 @@ public class AgregarPagos extends AppCompatActivity {
 
 
     private void sendPago(View v) {
+        Log.d(TAG, "Sending Pago");
         Map<String, Object> data = new HashMap<>();
         String key = cardNumber.getText().toString().substring(15, 19);
         Log.e(TAG, "KEY" + key);
@@ -267,24 +292,21 @@ public class AgregarPagos extends AppCompatActivity {
                 if (error == null) {
                     Log.d(TAG, "Metodo de pago Guardado EXITOSAMENTE");
                     Toast.makeText(v.getContext(), "Guardado Exitosamente", Toast.LENGTH_LONG).show();
+                    clear(v);
                 } else {
                     Log.w(TAG, "ERROR AL GUARDAR METODO DE PAGO::");
                     Toast.makeText(v.getContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             }
         });
-        metodosPagoReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                nodesCounter = String.valueOf(snapshot.getChildrenCount());
-                Log.e(TAG, nodesCounter);
-            }
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    private void clear(View v){
+        spinnerBancos.setText("");
+        cardNumber.setText("");
+        nombreTitular.setText("");
+        expirationDate.setText("");
+        cardCode.setText("");
     }
 
     private void hideKeyBoard(View view) {

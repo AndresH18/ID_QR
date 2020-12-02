@@ -1,6 +1,7 @@
 package com.example.id_qr.ui.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,7 +21,8 @@ import android.widget.TextView;
 
 import com.example.id_qr.R;
 import com.example.id_qr.data_models.Recarga;
-import com.example.id_qr.ui.AgregarPagos;
+import com.example.id_qr.ui.secundary.AgregarPagos;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +80,6 @@ public class RecargaFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
-    private Button btnRecarga, btnAgregar;
 
 
     public RecargaFragment() {
@@ -117,7 +118,7 @@ public class RecargaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_recarga, container, false);
+        View view = inflater.inflate(R.layout.fragment_recarga, container, false);
 
 
         spinnerMetodos = view.findViewById(R.id.metodos_pago);
@@ -125,8 +126,10 @@ public class RecargaFragment extends Fragment {
         recargaLayout = view.findViewById(R.id.valor_recargar_layout);
         backgroundLayout = view.findViewById(R.id.background_layout);
         valorRecarga = view.findViewById(R.id.valor_a_recargar);
+
         recargaButton = view.findViewById(R.id.recarga_button);
         agregarButton = view.findViewById(R.id.guardar_button);
+
         resumen = view.findViewById(R.id.resumen);
         saldoActual = view.findViewById(R.id.saldo_actual);
 
@@ -141,10 +144,8 @@ public class RecargaFragment extends Fragment {
         saldoReference.addValueEventListener(saldoListener);
         metodosPagoReference.addValueEventListener(metodosPagoListener);
 
-        btnRecarga = view.findViewById(R.id.recarga_button);
-        btnRecarga.setOnClickListener(recargaClickListener);
-        btnAgregar = view.findViewById(R.id.guardar_button);
-        btnAgregar.setOnClickListener(agregarPagoClickListener);
+        recargaButton.setOnClickListener(recargaClickListener);
+        agregarButton.setOnClickListener(agregarPagoClickListener);
 
 
         return view;
@@ -156,7 +157,7 @@ public class RecargaFragment extends Fragment {
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             Log.d(TAG, "Saldo Changed");
             String saldo = snapshot.getValue(String.class);
-            saldoActual.setText(getString(R.string.saldo_actual_txt).concat(saldo));
+            saldoActual.setText(getString(R.string.saldo_actual_txt).concat(saldo).concat("  COP"));
             saldoIntActual = Integer.parseInt(saldo);
         }
 
@@ -195,7 +196,7 @@ public class RecargaFragment extends Fragment {
         public void onFocusChange(View v, boolean hasFocus) {
             if (!hasFocus) {
                 hideKeyBoard(v);
-                if (verificar(v)) {
+                if (verificar(v, false)) {
                     updateResumen();
                 }
             }
@@ -214,23 +215,41 @@ public class RecargaFragment extends Fragment {
         public void onClick(View v) {
             Log.d(TAG, "recargaClickListener");
 
-            if (verificar(v)) {
+            if (verificar(v, true)) {
                 try {
 
                     int a = Integer.parseInt(valorRecarga.getText().toString());
                     int total = saldoIntActual + a;
-                    saldoReference.setValue(String.valueOf(total));
+//                    saldoReference.setValue(String.valueOf(total));
 
+                    new MaterialAlertDialogBuilder(v.getContext()).setTitle(getString(R.string.confirmar))
+                            .setMessage("¿Recargar:  " + a + "?")
+                            .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d(TAG, "MaterialDialogBuilder, ConfirmarRecarga, CANCELAR");
+                                    //EMPTY
+                                }
+                            }).setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d(TAG, "MaterialDialogBuilder, ConfirmarRecarga, ACEPTAR");
 
-                    Map<String, String> dateTimeMap = getDateTime();
-                    final DatabaseReference dateReference = historialReference.child(dateTimeMap.get("DATE"));
-                    final DatabaseReference timeReference = dateReference.child(dateTimeMap.get("TIME"));
-                    Map<String, Object> dat = new HashMap<>();
-                    dat.put("Event", new Recarga(String.valueOf(a), spinnerMetodos.getText().toString()));
-                    dat.put("Timestamp", ServerValue.TIMESTAMP);
-                    timeReference.setValue(dat);
+                            saldoReference.setValue(String.valueOf(total));
 
-                    valorRecarga.setText("");
+                            Map<String, String> dateTimeMap = getDateTime();
+                            final DatabaseReference dateReference = historialReference.child(dateTimeMap.get("DATE"));
+                            final DatabaseReference timeReference = dateReference.child(dateTimeMap.get("TIME"));
+                            Map<String, Object> dat = new HashMap<>();
+                            dat.put("Event", new Recarga(String.valueOf(a), spinnerMetodos.getText().toString(), "Recarga"));
+                            dat.put("Timestamp", ServerValue.TIMESTAMP);
+                            timeReference.setValue(dat);
+
+                            valorRecarga.setText("");
+
+                        }
+                    }).show();
+
 
                 } catch (NumberFormatException e) {
                     Log.e(TAG, "Error Conviertiendo Saldo de String a Integer", e);
@@ -248,22 +267,32 @@ public class RecargaFragment extends Fragment {
         }
     };
 
-    private boolean verificar(View v) {
-        continuar = true;
-        Log.d(TAG, "Checking Format and Value of Fields");
-        if (spinnerMetodos.getText().toString().length() < 3) {
-            Log.w(TAG, "SpinnerMetodos, No se a seleccionado opcion");
-            metodosLayout.setError("Seleccione una Opción");
-            continuar = false;
-        } else {
-            metodosLayout.setError(null);
-        }
-        if (valorRecarga.getText().toString().length() < 3) {
-            Log.w(TAG, "ValorRecarga, Formato NO VALIDO");
-            recargaLayout.setError("Ingrese un Valor Valido");
-            continuar = false;
+    private boolean verificar(View v, boolean b) {
+        continuar = false;
+
+        if ((valorRecarga.getText().toString().replaceAll(" ", "")).length() != 0
+                || spinnerMetodos.getText().toString().length() != 0 || b) {
+            Log.d(TAG, "Checking Format and Value of Fields");
+            continuar = true;
+            if (spinnerMetodos.getText().toString().length() < 3) {
+                Log.w(TAG, "SpinnerMetodos, No se a seleccionado opcion");
+                metodosLayout.setError("Seleccione una Opción");
+                continuar = false;
+            } else {
+                metodosLayout.setError(null);
+            }
+            if (valorRecarga.getText().toString().length() < 3) {
+                Log.w(TAG, "ValorRecarga, Formato NO VALIDO");
+                recargaLayout.setError("Ingrese un Valor Valido");
+                continuar = false;
+            } else {
+                recargaLayout.setError(null);
+            }
+
         } else {
             recargaLayout.setError(null);
+            metodosLayout.setError(null);
+
         }
 
         return continuar;
@@ -274,7 +303,7 @@ public class RecargaFragment extends Fragment {
         StringBuilder sb = new StringBuilder();
         sb.append("Metodo de Pago, Termina en: ").append(spinnerMetodos.getText().toString());
         sb.append("\n");
-        sb.append("Valor a Recargar: ").append(Objects.requireNonNull(valorRecarga.getText()).toString());
+        sb.append("Valor a Recargar: ").append(Objects.requireNonNull(valorRecarga.getText()).toString()).append("  COP");
 
         resumen.setText(sb.toString());
     }

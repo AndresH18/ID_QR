@@ -1,11 +1,13 @@
 package com.example.id_qr.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -13,10 +15,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.id_qr.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class RecoverPassword extends AppCompatActivity {
+    private static final String TAG = "RecoverPassword";
+
     private final String recoverUrl = "https://eiadigital.eia.edu.co/sao/recuperarContrasena.do";
 
+    private ConstraintLayout background_layout;
+    private TextInputLayout user_layout;
 
     private Button btn;
     private EditText correoEditText;
@@ -28,11 +35,17 @@ public class RecoverPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recover_password_activity);
 
-        btn = (Button) findViewById(R.id.recover_btn_layout_recoverP);
-        correoEditText = (EditText) findViewById(R.id.email_editText_Layout_recoverP);
+        background_layout = findViewById(R.id.scrollView);
+        user_layout = findViewById(R.id.textInputLayout_recover_field);
 
-        Intent recoverIntent = getIntent();
-        if((email = recoverIntent.getStringExtra("email_user")) != null){
+        btn = (Button) findViewById(R.id.recover_btn_layout_recoverP);
+        correoEditText = findViewById(R.id.email_editText_Layout_recoverP);
+
+//        Intent recoverIntent = getIntent();
+//        if((email = recoverIntent.getStringExtra("email_user")) != null){
+//            correoEditText.setText(email);
+//        }
+        if ((email = getIntent().getStringExtra("email_user")) != null) {
             correoEditText.setText(email);
         }
         webRecoverIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoverUrl));
@@ -48,6 +61,31 @@ public class RecoverPassword extends AppCompatActivity {
                     Toast toast = Toast.makeText(v.getContext(), "Correo No Autorizado", Toast.LENGTH_LONG);
 
                     toast.show();
+                }
+            }
+        });
+
+        background_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                layout.requestFocus();
+
+                hideKeyBoard(v);
+            }
+        });
+        correoEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (correoEditText.getText().toString().equals("")) {
+                        user_layout.setError(null);
+                    } else if (!correoEditText.getText().toString().endsWith("@eia.edu.co")) {
+                        user_layout.setError("Correo no autorizado");
+                    } else {
+                        user_layout.setError(null);
+                    }
+                    Log.d(TAG, "correoEditText, hide keyboard");
+                    hideKeyBoard(v);
                 }
             }
         });

@@ -21,15 +21,16 @@ import android.widget.Toast;
 
 
 import com.example.id_qr.R;
-import com.example.id_qr.ui.Principal;
+import com.example.id_qr.ui.primary.Principal;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginMain extends AppCompatActivity {
-    private static final String TAG = "LoginMain";
+    private static final String TAG = LoginMain.class.getSimpleName();
 
     private static final String USER_EMAIL = "USER_EMAIL";
 
@@ -40,7 +41,9 @@ public class LoginMain extends AppCompatActivity {
     private Toast backToast;
     private long backPressedTime = 0;
 
-    private ConstraintLayout layout;
+    private ConstraintLayout background_layout;
+    private TextInputLayout user_layout;
+    private TextInputLayout password_layout;
     private EditText editTextUser;
     private TextView editTextPass;
     private Button btn_login;
@@ -67,12 +70,20 @@ public class LoginMain extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Log.d(TAG, "Current user === existes");
-            FirebaseAuth.getInstance().signOut();
-            Log.d(TAG, "Current user: logout");
-        } else {
-            Log.d(TAG, "Current user === null");
+//        if (currentUser != null) {
+//            Log.d(TAG, "Current user === existes");
+//            FirebaseAuth.getInstance().signOut();
+//            Log.d(TAG, "Current user: logout");
+//        } else {
+//            Log.d(TAG, "Current user === null");
+//        }
+        if(currentUser != null){
+            Log.w(TAG,"User is logged in");
+            Toast t = Toast.makeText(getApplicationContext(), "Login in...", Toast.LENGTH_SHORT);
+            t.show();
+            Intent i = new Intent(LoginMain.this,Principal.class);
+            startActivity(i);
+            finish();
         }
 
     }
@@ -86,7 +97,10 @@ public class LoginMain extends AppCompatActivity {
         editTextPass = (EditText) findViewById(R.id.login_password_editText);
         btn_login = findViewById(R.id.login_btn_layout_login);
         btn_recuperarPassword = findViewById(R.id.recover_password_btn_layout_login);
-        layout = findViewById(R.id.scrollView);
+
+        background_layout = findViewById(R.id.scrollView);
+        user_layout = findViewById(R.id.textInputLayout_user_field);
+        password_layout = findViewById(R.id.textInputLayout_password_field);
 
 
         startActionListener();
@@ -97,7 +111,7 @@ public class LoginMain extends AppCompatActivity {
         if (user != null) {
             editTextUser.setText(user);
         } else {
-//            editTextUser.setText("andres@eia.edu.co");
+            editTextUser.setText("andres@eia.edu.co");
             editTextPass.setText("Andres");
         }
 
@@ -115,25 +129,62 @@ public class LoginMain extends AppCompatActivity {
     }
 
     private void startActionListener() {
-        layout.setOnClickListener(new View.OnClickListener() {
+        background_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                hideKeyBoard(v);
+//                layout.requestFocus();
+
+                hideKeyBoard(v);
             }
         });
         editTextUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    hideKeyBoard(v);
+//                if ((!hasFocus) && !editTextPass.isFocused()) {
+//                    Log.d(TAG, "editTextUser, hide keyboard");
+//                    hideKeyBoard(v);
+//
+//                }
+                if (!hasFocus) {
+                    if (editTextUser.getText().toString().equals("")) {
+                        user_layout.setError(null);
+                    } else if (!editTextUser.getText().toString().endsWith("@eia.edu.co")) {
+                        user_layout.setError("Correo no autorizado");
+                    } else {
+                        user_layout.setError(null);
+                    }
+                    if (!editTextPass.isFocused()) {
+                        Log.d(TAG, "editTextUser, hide keyboard");
+                        hideKeyBoard(v);
+                    }
                 }
             }
         });
         editTextPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                    hideKeyBoard(v);
+//                if ((!hasFocus) && !editTextUser.isFocused()) {
+//                    Log.d(TAG, "editTextPassword, hide keyboard");
+//                    hideKeyBoard(v);
+//                }
+                if (!hasFocus) {
+//                    if (editTextPass.getText().toString().equals("")) {
+//                        password_layout.setError(null);
+//                    } else if (!editTextPass.getText().toString().endsWith("@eia.edu.co")) {
+//                        password_layout.setError("Correo no autorizado");
+//                    } else {
+//                        password_layout.setError(null);
+//                    }
+                    if (editTextPass.getText().toString().isEmpty()) {
+                        password_layout.setError(" ");
+
+                    } else {
+                        password_layout.setError(null);
+                    }
+                    if (!editTextUser.isFocused()) {
+                        Log.d(TAG, "editTextPassword, hide keyboard");
+                        hideKeyBoard(v);
+                    }
                 }
             }
         });
@@ -149,7 +200,7 @@ public class LoginMain extends AppCompatActivity {
                     user = editTextUser.getText().toString();
                     if (user.endsWith("@eia.edu.co")) {
                         pass = editTextPass.getText().toString();
-                        Toast.makeText(v.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(v.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                         /* StringBuilder sb = new StringBuilder();
                          * sb.append("user: ").append(editTextUser.getText().toString());
                          * sb.append("\n");
@@ -171,11 +222,11 @@ public class LoginMain extends AppCompatActivity {
 //
 //                            // Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
 //                            // make intent for main activity
-//                            Log.i(TAG, "Declare intent for \"Principal\"");
+//                            Log.d(TAG, "Declare intent for \"Principal\"");
 //
 //                            Intent intent = new Intent(LoginMain.this, Principal.class);
 //                            // start main Activity
-//                            Log.i(TAG, "Start Intent for\"Principal\"");
+//                            Log.d(TAG, "Start Intent for\"Principal\"");
 //                            startActivity(intent);
 //                            //finish login
 //                            finish();
@@ -238,33 +289,17 @@ public class LoginMain extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
-    private void hideKeyBoard(View view) {
-        // Hide the keyboard when the button is pushed.
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-
     private void log_in(String user, String pass, Context context) {
-        Log.i(TAG, "signing in...");
-
-        if (user.isEmpty()) {
-            user = " ";
-        }
-        if (pass.isEmpty()) {
-            pass = " ";
-        }
-
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected()) {
+        btn_login.setClickable(false);
+        btn_recuperarPassword.setClickable(false);
+//        ConnectivityManager connMgr = (ConnectivityManager)
+//                getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//
+//        if (networkInfo != null && networkInfo.isConnected()) {
+        if (isInternetConected() && !pass.isEmpty() && !user.isEmpty()) {
+            Log.d(TAG, "signing in...");
 //            Toast.makeText(context, "Conecting...", Toast.LENGTH_SHORT).show();
             // Create background thread to connect and get data
             mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -275,7 +310,7 @@ public class LoginMain extends AppCompatActivity {
                         Log.d(TAG, "signInWithEmail:success");
 //                        FirebaseUser user = mAuth.getCurrentUser();
 
-                        Log.i(TAG, "Declare intent for \"Principal\"");
+                        Log.d(TAG, "Declare intent for \"Principal\"");
 
                         Toast.makeText(context, "Redirecting...", Toast.LENGTH_LONG).show();
                         //
@@ -289,16 +324,48 @@ public class LoginMain extends AppCompatActivity {
                         // If log_in in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show();
+                        btn_login.setClickable(true);
+                        btn_recuperarPassword.setClickable(true);
                     }
 
                 }
             });
+        } else if (user.isEmpty() || pass.isEmpty()) {
+            if (user.isEmpty()) {
+
+            }
+            if (pass.isEmpty()) {
+
+            }
+            btn_login.setClickable(true);
+            btn_recuperarPassword.setClickable(true);
         } else {
             Log.w(TAG, "NO INTERNET CONECTION");
             Toast.makeText(context, "No se detecto Conexi" + (char) 243 + "n", Toast.LENGTH_LONG).show();
+            btn_login.setClickable(true);
+            btn_recuperarPassword.setClickable(true);
 
         }
 
+    }
+
+    private void hideKeyBoard(View view) {
+        // Hide the keyboard when the button is pushed.
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    private boolean isInternetConected() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

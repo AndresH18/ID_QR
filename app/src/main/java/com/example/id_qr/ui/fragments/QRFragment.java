@@ -1,4 +1,4 @@
-package com.example.id_qr.ui;
+package com.example.id_qr.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.example.id_qr.R;
  * create an instance of this fragment.
  */
 public class QRFragment extends Fragment {
-    private static final String TAG = "QR_Fragment";
+    private static final String TAG = QRFragment.class.getCanonicalName();
 
     private static ImageView qrImageView;
 

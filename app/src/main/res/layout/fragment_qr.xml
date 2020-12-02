@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".ui.QRFragment">
+    tools:context=".ui.fragments.QRFragment">
 
 
     <androidx.core.widget.NestedScrollView

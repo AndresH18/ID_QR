@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".ui.PagoFragment">
+    tools:context=".ui.fragments.PagoFragment">
 
 
     <androidx.core.widget.NestedScrollView
@@ -26,7 +26,7 @@
                 android:layout_width="177dp"
                 android:layout_height="135dp"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:adjustViewBounds="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -74,7 +74,7 @@
                 android:id="@+id/ib_pago_dia_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="?android:selectableItemBackground"
                 android:src="@drawable/icono_pago_normal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
                 android:id="@+id/ib_pago_dia_completo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="10dp"
                 android:background="?android:selectableItemBackground"
                 android:src="@drawable/icono_pago_dia"
                 app:layout_constraintEnd_toEndOf="parent"
